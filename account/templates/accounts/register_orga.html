@@ -1,0 +1,102 @@
+{% extends "layouts/base-site-fullscreen.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mx-4">
+
+          <form role="form" method="post" action="">
+
+            {% csrf_token %} 
+
+            <div class="card-body p-4">
+              
+              <div class="text-center">
+                <h1>Register an organization</h1>
+                <p class="text-muted">
+                  
+                  {% if msg %}
+                    {{ msg | safe }}
+                  {% else %}
+                    Sign up with credentials
+                  {% endif %}
+
+                </p>
+              </div>
+
+              <br />
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-bank"></use>
+                    </svg></span></div>
+                {{ form.name }}
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-location-pin"></use>
+                    </svg></span></div>
+                {{ form.adress }}
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-location-pin"></use>
+                    </svg></span></div>
+                {{ form.zipcode}}
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-location-pin"></use>
+                    </svg></span></div>
+                {{ form.city }}
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-location-pin"></use>
+                    </svg></span></div>
+                {{ form.country }}
+              </div>
+              
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-phone"></use>
+                    </svg></span></div>
+                {{ form.phone }}
+              </div>
+              
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">
+                    <svg class="c-icon">
+                      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>
+                    </svg></span></div>
+                {{ form.siren }}
+              </div>
+
+              <br />
+
+              <div class="text-center">
+                  <button type="submit" name="register" class="btn btn-primary px-4">Register Organization</button>
+              </div>
+
+            </div>
+          
+          </form>  
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,178 @@
+{% extends "layouts/base-site.html" %}
+{% load i18n %}
+{% block title %} Dashboard {% endblock %} 
+{% block content %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<style>
+    .float-container {
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      height: 100%;
+      width: 100%
+    }
+    
+    .float-child {
+      width: 50%;
+      height: 50%;
+      padding: 20px;
+    }
+</style>
+    <div class="container-fluid">
+      <div class="fade-in">
+        <div class="row">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-primary">
+              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="text-value-lg">{{total}}</div>
+                  <div>{% trans "Number of Bottles :" %}</div>
+                </div>
+              </div>
+              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart1" height="70"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- /.col-->
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-info">
+              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="text-value-lg">{{lot_number}}</div>
+                  <div>{% trans "Number of Lots :" %}</div>
+                </div>
+              </div>
+              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart2" height="70"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- /.col-->
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-warning">
+              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="text-value-lg">9.823</div>
+                  <div>{% trans "Number of QR Scans :" %}</div>
+                </div>
+              </div>
+              <div class="c-chart-wrapper mt-3" style="height:70px;">
+                <canvas class="chart" id="card-chart3" height="70"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- /.col-->
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-danger">
+              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="text-value-lg">{{volume}}</div>
+                  <div>{% trans "Losses of volume :" %}</div>
+                </div>
+              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart4" height="70"></canvas>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="float-container"> 
+          <div class="float-child">
+            <canvas id="chart_vol" style="flex: 1;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+            <table class="table table-responsive-sm table-hover table-outline mb-0" style="flex: 1;">
+              <thead class="thead-light">
+                <tr>
+                  <th class="text-center">{% trans "Appellation" %}</th>
+                  <th class="text-center">{% trans "Parcelle Name" %}</th>
+                  <th class="text-center">{% trans "Initial volume for each lot of the parcelle" %}</th>
+                  <th class="text-center">{% trans "Area" %}</th>
+                  <th class="text-center">{% trans "Performance" %}</th>
+                  <th class="text-center">{% trans "Global Performance" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for parcelle in parcelles%}
+                <tr style='color: {{parcelle.appellation.color}};'>
+                  <td class="text-center">{{parcelle.appellation}}</td>
+                  <td class="text-center">{{parcelle}}</td>
+                  <td class="text-center">
+                  {% for p, lots in parcelles_lots.items %}
+                    {% if p == parcelle %}
+                      {% for l in lots %}
+                        Lots: {{l.reference}}, Volume: {{l.volume}}<br>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor%}
+                  </td>
+                  <td class="text-center">
+                  {% for p, area in parcelles_areas.items %}
+                    {% if p == parcelle %}
+                        {{area}}<br>
+                    {% endif %}
+                  {% endfor%}</td>
+                  <td class="text-center">
+                  {% for p, perfo in parcelles_performance.items %}
+                    {% if p == parcelle %}
+                        {{perfo}}<br>
+                    {% endif %}
+                  {% endfor%}
+                  </td>
+                  <td class="text-center">
+                    {% for p, perfo in parcelles_global_performance.items %}
+                      {% if p == parcelle %}
+                        {{perfo}}<br>
+                      {% endif %}
+                    {% endfor%}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-->
+    </div>
+    <!-- /.row-->
+
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx1 = document.getElementById('chart_vol');
+  new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: {{ period_list | safe }}, 
+      datasets: [
+      {% for a, d in df_list.items %}
+        {
+          data: {{ d.0 | safe}},
+          label: '{{a}}',
+          pointStyle: 'circle',
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          borderColor: '{{d.1}}'
+        },
+        {% endfor %}
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+  });
+</script>
+{% endblock javascripts %}
