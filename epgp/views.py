@@ -14,14 +14,21 @@ class PlayerListView(SingleTableView):
     template_name = 'player/index.html'
     def get_table_data(self):
         return Player.objects.values('name', 'discordTag', 'owner__name')
+    
+class LootListView(SingleTableView, FilterView):
+    model = Loot
+    table_class = LootTable
+    template_name = 'loot/index.html'
+    filterset_class = LootFilter
+    
+    def get_table_data(self):
+        return Loot.objects.filter(ilvl__lte = 430)
 
 def lootListView(request):
     queryset = Loot.objects.filter(ilvl__lte = 430)
-    if 'q' in request.GET and request.GET['q']:
-        f = LootFilter(request.GET, queryset=queryset)
-        table = LootTable(data=f.qs)
-    else:
-        table = LootTable(data=queryset)
+
+    f = LootFilter(request.GET, queryset=queryset)
+    table = LootTable(data=f.qs)
     return render(request, 'loot/index.html', {'filter': f, 'table': table})
 
 class RaidListView(SingleTableView):

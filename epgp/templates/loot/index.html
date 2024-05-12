@@ -18,11 +18,6 @@
             <div class="card-header">
                 <i class="fa fa-align-justify"></i>
                 <h2>Liste des loot</h2>
-                <form action="" method="get" class="form form-inline">
-                    {% bootstrap_form filter.form layout='inline' %}
-                    {% bootstrap_button 'filter' %}
-                </form>
-
             </div>
             <div class="card-body">
                 {% render_table table %}
