@@ -172,9 +172,10 @@ class Raid(models.Model):
         THRONE = "THRONE", _("Throne of the Four Winds")
         FIRELAND = "FIRELAND", _("Firelands")
         DRAGON = "DRAGON", _("Dragon Soul")
+        AUTRE = "AUTRE", _("Autre")
 
     id = models.AutoField(primary_key=True)
-    played_at = models.DateField(verbose_name='Date', default=datetime.now())
+    played_at = models.DateField(verbose_name='Date', default=datetime.now)
     instance = models.CharField(
         max_length=20,
         choices=RaidInstance,
@@ -187,8 +188,7 @@ class Raid(models.Model):
     def __str__(self): 
          return self.instance + " " + str(self.played_at)
 
-class EPGPLogEntry(models.Model):
-    class EPGPLogEntryType(models.TextChoices):
+class EPGPLogEntryType(models.TextChoices):
         DECAY = "DECAY", _("Decay")
         DOCKEP = "DOCKEP", _("Dock EP")
         DOCKGP = "DOCKGP", _("Dock GP")
@@ -197,6 +197,7 @@ class EPGPLogEntry(models.Model):
         STANDBY = "STANDBY", _("Standby")
         OTHER = "OTHER", _("Autre")
 
+class EPGPLogEntry(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='ID')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créée le')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Modifié le')

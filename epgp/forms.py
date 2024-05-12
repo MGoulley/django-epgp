@@ -1,7 +1,17 @@
 from django import forms
 from .models import *
+from dal import autocomplete
 
-class EPGPLogEntryForm(forms.Form):
-    target_player_id = forms.ModelChoiceField(queryset=Player.objects.all())
-    source_player_id = forms.ModelChoiceField(queryset=Player.objects.all())
-    type = forms.ChoiceField(choices=EPGPLogEntry.EPGPLogEntryType.choices)
+class GiveRaidForm(forms.Form):
+    raid = forms.ModelChoiceField(queryset=Raid.objects.all())
+    give_by = forms.ModelChoiceField(queryset=Player.objects.all())
+    reason = forms.CharField()
+    ep_delta = forms.IntegerField()
+
+class GiveLootForm(forms.Form):
+    target_player = forms.ModelChoiceField(queryset=Player.objects.all())
+    give_by = forms.ModelChoiceField(queryset=Player.objects.all())
+    class Meta:
+        widgets = {
+            'loot': autocomplete.ModelSelect2(url='loot-autocomplete')
+        }
