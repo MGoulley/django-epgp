@@ -24,7 +24,7 @@ jobs:
     - name: connect and pull
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && git restore . && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
     - name: replace config variables
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sh ${{ secrets.WORK_DIR }}/django/variabilise.sh ${{ secrets.DB_HOST }} ${{ secrets.DB_PORT }} ${{ secrets.DB_USER }} ${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} ${{ secrets.WORK_DIR }}/mysql.conf && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sh ${{ secrets.WORK_DIR }}/django/variabilise.sh ${{ secrets.DB_HOST }} ${{ secrets.DB_PORT }} ${{ secrets.DB_USER }} ${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} ${{ secrets.WORK_DIR }}/django/mysql.conf && exit"
     - name: install requierements
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 -m pip install -r requierements.txt && exit"
     - name: make migrations
