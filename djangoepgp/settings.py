@@ -55,7 +55,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'login_required.middleware.LoginRequiredMiddleware',
 ]
 
 INTERNAL_IPS = [
@@ -76,9 +75,6 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "login"   # Route defined in app/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in app/urls.py
 TEMPLATE_DIR = os.path.join(BASE_DIR, "djangoepgp/templates")
-
-LOGIN_REQUIRED_IGNORE_PATHS = ['/accounts/register/','/accounts/login/', '/accounts/logout']
-LOGIN_REQUIRED_IGNORE_VIEW_NAMES = []
 
 DJANGO_TABLES2_TEMPLATE = "bootstrap-table-custom.html"
 
