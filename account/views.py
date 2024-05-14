@@ -3,12 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-
-from djangoepgp import settings
 from .forms import *
-from django.contrib.auth.models import Group
-import pandas as pd
 
 def index(request):
     data = {}

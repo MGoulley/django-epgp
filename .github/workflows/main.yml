@@ -30,8 +30,10 @@ jobs:
     - name: install requierements
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && source .venv/bin/activate && python3.11 -m pip install -r requirements.txt && exit"
     - name: make migrations
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 .\manage.py makemigrations && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && source .venv/bin/activate && python3.11 .\manage.py makemigrations && exit"
     - name: make migrate
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 .\manage.py migrate && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && source .venv/bin/activate && python3.11 .\manage.py migrate && exit"
+    - name: collect static
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && source .venv/bin/activate && python3.11 .\manage.py collectstatic && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
