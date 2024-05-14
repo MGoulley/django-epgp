@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  
+jobs:
+  run_pull:
+    name: run pull
+    runs-on: ubuntu-latest
+    environment: prd
+    
+    steps:
+    - name: install ssh keys
+      # check this thread to understand why its needed:
+      # https://stackoverflow.com/a/70447517
+      run: |
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+    - name: clone repo
+      continue-on-error: true
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && if [ ! -d directory ]; then git clone ${{ secrets.REPO_URL }} django fi && exit"
+    - name: connect and pull
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && git restore . && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+    - name: replace config variables
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sh ${{ secrets.WORK_DIR }}/django/variabilise.sh ${{ secrets.DB_HOST }} ${{ secrets.DB_PORT }} ${{ secrets.DB_USER }} ${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} ${{ secrets.WORK_DIR }}/mysql.conf && exit"
+    - name: install requierements
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 -m pip install -r requierements.txt && exit"
+    - name: make migrations
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 .\manage.py makemigrations && exit"
+    - name: make migrate
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 .\manage.py migrate && exit"
+    - name: cleanup
+      run: rm -rf ~/.ssh
