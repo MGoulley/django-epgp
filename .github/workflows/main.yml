@@ -25,8 +25,10 @@ jobs:
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && git restore . && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
     - name: replace config variables
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sh ${{ secrets.WORK_DIR }}/django/variabilise.sh ${{ secrets.DB_HOST }} ${{ secrets.DB_PORT }} ${{ secrets.DB_USER }} ${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} ${{ secrets.WORK_DIR }}/django/mysql.conf && exit"
+    - name: init venv
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 -m venv .venv && source .venv/bin/activate && exit"
     - name: install requierements
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 -m pip install -r requierements.txt && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 -m pip install -r requirements.txt && exit"
     - name: make migrations
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/django && python3.11 .\manage.py makemigrations && exit"
     - name: make migrate
