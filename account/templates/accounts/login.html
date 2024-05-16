@@ -1,6 +1,6 @@
 {% extends "layouts/base-site-fullscreen.html" %}
 
-{% block title %} Login {% endblock %}
+{% block title %} Connexion {% endblock %}
 
 {% block content %}
 
@@ -16,7 +16,7 @@
               <div class="card-body">
 
                 <div class="text-center">
-                  <h1>Login</h1>
+                  <h1>Connexion</h1>
                   <p class="text-muted">
 
                     {% if msg %}
@@ -49,7 +49,7 @@
                 <br />
 
                 <div class="text-center">
-                    <button type="submit" name="login" class="btn btn-primary px-4">Login</button>
+                    <button type="submit" name="login" class="btn btn-primary px-4">Se connecter</button>
                 </div>
 
               </div>
@@ -57,7 +57,7 @@
             </form>
 
             <div class="card-footer p-4 text-center">
-                Pas encore de compte ? <a href={% url 'register' %} >S'enregistrer</a>
+                Tu es une vraie belette ?
             </div>
 
           </div>
