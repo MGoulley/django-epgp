@@ -146,6 +146,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+MEDIA_URL = '/opt/lbdb/django/djangoepgp/media/'
+MEDIA_ROOT = '/opt/lbdb/django/djangoepgp/media'
+
 STATIC_URL = '/static/'
 
 # STATIC_ROOT production load
@@ -154,11 +157,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "djangoepgp/staticfiles")
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
-
-# STATIC_ROOT development load
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "djangoepgp/static"),
-)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
