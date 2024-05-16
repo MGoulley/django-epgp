@@ -150,13 +150,9 @@ MEDIA_URL = '/opt/lbdb/django/djangoepgp/media/'
 MEDIA_ROOT = '/opt/lbdb/django/djangoepgp/media'
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-# STATIC_ROOT production load
-STATIC_ROOT = os.path.join(BASE_DIR, "djangoepgp/staticfiles")
-
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
-]
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'),]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
