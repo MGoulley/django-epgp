@@ -149,7 +149,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # STATIC_ROOT production load
-STATIC_ROOT = os.path.join(BASE_DIR, "djangoepgp/staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "djangoepgp/static")
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
@@ -157,7 +157,7 @@ LOCALE_PATHS = [
 
 # STATIC_ROOT development load
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "djangoepgp/static"),
+    os.path.join(BASE_DIR, "djangoepgp/staticfiles"),
 )
 
 # Default primary key field type
