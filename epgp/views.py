@@ -100,7 +100,7 @@ def giveLootEPGP(request):
     return render(request, "epgp/giveloot.html", {"form": form})
 
 def index(request):
-    return HttpResponse("PAGE D'ACCUEIL")
+    return render(request, "index.html")
 
 def player(request, name):
     return HttpResponse("GET PLAYER INFO OF " + name)
