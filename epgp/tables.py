@@ -5,7 +5,6 @@ class PlayerTable(tables.Table):
     class Meta:
         model = Player
         fields = ("name", "discordTag", "isOfficier")
-        #fields = ("name", "discordTag", "owner__name")
 
 class CharacterTable(tables.Table):
     class Meta:
