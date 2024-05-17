@@ -5,7 +5,7 @@ from dal import autocomplete
 class PlayerForm(forms.Form):
     name = forms.CharField()
     discordTag = forms.CharField()
-    isOfficier = forms.BooleanField()
+    isOfficier = forms.BooleanField(required=False, initial=False,)
 
 class CharacterForm(forms.Form):
     playerId = forms.ModelChoiceField(queryset=Player.objects.all())

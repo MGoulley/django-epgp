@@ -190,12 +190,13 @@ class Raid(models.Model):
          return self.instance + " " + str(self.played_at)
 
 class EPGPLogEntryType(models.TextChoices):
+        NEWPLAYER = "NEWPLAYER", _("Nouveau Joueur")
         DECAY = "DECAY", _("Decay")
-        DOCKEP = "DOCKEP", _("Dock EP")
-        DOCKGP = "DOCKGP", _("Dock GP")
+        DOCKEP = "DOCKEP", _("Pénalité EP")
+        DOCKGP = "DOCKGP", _("Pénalité GP")
         LOOT = "LOOT", _("Loot")
         PARTICIPATE = "PARTICIPATE", _("Participation")
-        STANDBY = "STANDBY", _("Standby")
+        STANDBY = "STANDBY", _("Bench")
         OTHER = "OTHER", _("Autre")
 
 class EPGPLogEntry(models.Model):

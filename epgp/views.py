@@ -59,6 +59,8 @@ def addPlayer(request):
             discordTag = form.cleaned_data.get("discordTag")
             player = Player(name=name, discordTag=discordTag)
             player.save()
+            log = EPGPLogEntry(target_player_id=player, source_player_id=player, type=EPGPLogEntryType.NEWPLAYER, reason="Bienvenue chez les belettes", ep_delta=500, gp_delta=0)
+            log.save()
             return HttpResponseRedirect("/players")
     else:
         form = PlayerForm()
