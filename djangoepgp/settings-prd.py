@@ -149,8 +149,8 @@ USE_TZ = True
 MEDIA_URL = '/opt/lbdb/django/djangoepgp/media/'
 MEDIA_ROOT = '/opt/lbdb/django/djangoepgp/media'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = '/opt/lbdb/django/djangoepgp/static/'
+STATIC_ROOT = '/opt/lbdb/django/djangoepgp/static'
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'),]
 
