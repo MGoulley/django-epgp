@@ -5,6 +5,7 @@ from dal import autocomplete
 class PlayerForm(forms.Form):
     name = forms.CharField()
     discordTag = forms.CharField()
+    isOfficier = forms.BooleanField()
 
 class CharacterForm(forms.Form):
     playerId = forms.ModelChoiceField(queryset=Player.objects.all())
@@ -15,6 +16,15 @@ class CharacterForm(forms.Form):
     classe = forms.ChoiceField(choices=Character.CharacterClass.choices,)
     specMain = forms.ChoiceField(choices=Character.CharacterSpec.choices,)
     specAlt = forms.ChoiceField(choices=Character.CharacterSpec.choices,)
+
+class RaidForm(forms.Form):
+    played_at = forms.DateField(initial=datetime.now)
+    instance = forms.ChoiceField(choices=Raid.RaidInstance.choices,)
+    participants = forms.ModelMultipleChoiceField(
+        queryset=Character.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    commentaire = forms.CharField()
 
 class GiveRaidForm(forms.Form):
     raid = forms.ModelChoiceField(queryset=Raid.objects.all())

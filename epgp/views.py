@@ -14,7 +14,7 @@ class PlayerListView(SingleTableView):
     table_class = PlayerTable
     template_name = 'player/index.html'
     def get_table_data(self):
-        return Player.objects.values('name', 'discordTag', 'owner__name')
+        return Player.objects.values('name', 'discordTag', 'isOfficier', 'owner__name')
     
 class LootListView(SingleTableView, FilterView):
     model = Loot
@@ -84,6 +84,25 @@ def addCharacter(request):
         form = CharacterForm()
 
     return render(request, "character/add.html", {"form": form})
+
+def addRaid(request):
+    if request.method == "POST":
+        form = RaidForm(request.POST)
+        if form.is_valid():
+            played_at = form.cleaned_data.get("played_at")
+            instance = form.cleaned_data.get("instance")
+            participants_raw = form.cleaned_data.get("participants")
+            commentaire = form.cleaned_data.get("commentaire")
+            participants = participants_raw
+            print(participants)
+            
+            raid = Raid.objects.create(played_at=played_at, instance=instance, commentaire=commentaire)
+            raid.participants.set(participants)
+            return HttpResponseRedirect("/raids")
+    else:
+        form = RaidForm()
+
+    return render(request, "raid/add.html", {"form": form})
 
 def giveRaidEPGP(request):
     # if this is a POST request we need to process the form data

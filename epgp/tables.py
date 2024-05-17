@@ -4,7 +4,7 @@ from .models import *
 class PlayerTable(tables.Table):
     class Meta:
         model = Player
-        fields = ("name", "discordTag")
+        fields = ("name", "discordTag", "isOfficier")
         #fields = ("name", "discordTag", "owner__name")
 
 class CharacterTable(tables.Table):

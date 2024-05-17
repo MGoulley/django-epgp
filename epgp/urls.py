@@ -13,6 +13,7 @@ urlpatterns = [
     path("character/add", login_required(views.addCharacter), name="newcharacter"),
     path("loots", LootListView.as_view()),
     path("raids", login_required(RaidListView.as_view())),
+    path("raid/add", login_required(views.addRaid), name="newraid"),
     path("epgp", EPGPLogEntryListView.as_view()),
     path("epgp/giveraid", login_required(views.giveRaidEPGP), name="giveraid"),
     path("epgp/giveloot", login_required(views.giveLootEPGP), name="giveloot"),
