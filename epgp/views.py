@@ -51,6 +51,40 @@ class EPGPLogEntryListView(SingleTableView):
     table_class = EPGPLogEntryTable
     template_name = 'epgp/index.html'
 
+def addPlayer(request):
+    if request.method == "POST":
+        form = PlayerForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get("name")
+            discordTag = form.cleaned_data.get("discordTag")
+            player = Player(name=name, discordTag=discordTag)
+            player.save()
+            return HttpResponseRedirect("/players")
+    else:
+        form = PlayerForm()
+
+    return render(request, "player/add.html", {"form": form})
+
+def addCharacter(request):
+    if request.method == "POST":
+        form = CharacterForm(request.POST)
+        if form.is_valid():
+            playerId = form.cleaned_data.get("playerId")
+            name = form.cleaned_data.get("name")
+            level = form.cleaned_data.get("level")
+            ilvl = form.cleaned_data.get("ilvl")
+            race = form.cleaned_data.get("race")
+            classe = form.cleaned_data.get("classe")
+            specMain = form.cleaned_data.get("specMain")
+            specAlt = form.cleaned_data.get("specAlt")
+            character = Character(playerId=playerId, name=name, level=level, ilvl=ilvl, race=race, classe=classe, specMain=specMain, specAlt=specAlt)
+            character.save()
+            return HttpResponseRedirect("/characters")
+    else:
+        form = CharacterForm()
+
+    return render(request, "character/add.html", {"form": form})
+
 def giveRaidEPGP(request):
     # if this is a POST request we need to process the form data
     if request.method == "POST":

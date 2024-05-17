@@ -1,0 +1,35 @@
+{% extends "layouts/base-site.html" %}
+{% load render_table from django_tables2 %}
+
+{% block title %} Joueur {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="fade-in">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <form method="POST" class="post-form" action="add">
+              <div class="card-header"><strong>Créer un nouveau Joueur</div>
+              <div class="card-body">    
+                  {% csrf_token %}
+                  {{ form }}
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-sm btn-primary" type="submit"> Valider</button>
+                <button class="btn btn-sm btn-danger" type="reset"> Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.col-->
+      </div>
+      <!-- /.row-->
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}
