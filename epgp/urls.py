@@ -6,6 +6,7 @@ from .views import *
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("", views.index, name="home"),
     re_path(r'^.*\.html', views.pages, name='pages'),
     path("players", PlayerListView.as_view()),
     path("player/add", login_required(views.addPlayer), name="newplayer"),

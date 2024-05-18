@@ -3,7 +3,6 @@
   <div class="c-sidebar-brand">
     <h2>Les Belettes de Brill</h2>
   </div>
-  {% if user.is_authenticated %}
   <ul class="c-sidebar-nav">
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/">
       <svg class="c-sidebar-nav-icon">
@@ -18,21 +17,26 @@
         <svg class="c-sidebar-nav-icon">
           <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-wc"></use>
         </svg> Personnages</a> </li>
+    {% if user.is_authenticated %}
     <li class="c-sidebar-nav-title">Evenements</li>
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/raids">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-gamepad"></use>
       </svg> Raids</a></li>
+    {% endif %}
     <li class="c-sidebar-nav-title">Loot</li>
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/loots">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
       </svg> Loots</a></li>
+    {% if user.is_authenticated %}
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/loots">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-bank"></use>
       </svg> Banque</a></li>
+    {% endif %}
     <li class="c-sidebar-nav-title">EPGP</li>
+    {% if user.is_authenticated %}
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/giveloot">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-gift"></use>
@@ -41,6 +45,7 @@
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-badge"></use>
       </svg> Award Raid</a> </li>
+    {% endif %}
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/ranking">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-list-numbered"></use>
@@ -48,32 +53,7 @@
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-list-rich"></use>
-      </svg> Logs EPGP</a> </li>    
-  {% else %}
-  <ul class="c-sidebar-nav">
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/">
-      <svg class="c-sidebar-nav-icon">
-        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-      </svg> Accueil</a></li>   
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/characters">
-        <svg class="c-sidebar-nav-icon">
-          <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-wc"></use>
-        </svg> Personnages</a> </li>
-    <li class="c-sidebar-nav-title">Loot</li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/loots">
-      <svg class="c-sidebar-nav-icon">
-        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
-      </svg> Loots</a></li>
-    <li class="c-sidebar-nav-title">EPGP</li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/ranking">
-      <svg class="c-sidebar-nav-icon">
-        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-list-rich"></use>
-      </svg> Ranking EPGP</a> </li>    
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp">
-      <svg class="c-sidebar-nav-icon">
-        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-list-rich"></use>
       </svg> Logs EPGP</a> </li>
-  {% endif %}
   {% if debug %}
     <li class="c-sidebar-nav-title">Theme</li>
     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/page-colors.html">
