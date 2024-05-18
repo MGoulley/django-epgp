@@ -35,7 +35,7 @@ class PlayerListView(SingleTableView):
     table_class = PlayerTable
     template_name = 'player/index.html'
     def get_table_data(self):
-        return Player.objects.values('name', 'discordTag', 'isOfficier', 'owner__name')
+        return Player.objects.values('name', 'discordTag', 'isOfficier')
     
 class LootListView(SingleTableMixin, FilterView):
     model = Loot
