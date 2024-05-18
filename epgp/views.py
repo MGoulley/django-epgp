@@ -7,6 +7,8 @@ from dal import autocomplete
 from django.template import loader
 
 from django.db.models import Sum, FloatField
+from django.db.models import F
+from django.db.models.functions import Round
 from django.db.models.functions import Cast, Coalesce
 
 from .filters import *
@@ -67,16 +69,8 @@ class CharacterListView(SingleTableView):
 
 def EPGPPlayerRanking(request):
     data = []
-    objects = EPGPLogEntry.objects.values("target_player_id__name").annotate(
-        total_ep=Sum('ep_delta'), 
-        total_gp=Sum('gp_delta'), 
-        rank=Coalesce(Sum('ep_delta')/Sum('gp_delta'), 'ep_delta')
-    ).order_by("-rank")
-    print(objects)
-    other = EPGPLogEntry.objects.all()
-    print(other)
+    objects = EPGPLogEntry.objects.getRankPerPlayer()
     for object in objects:
-        print(object)
         data.append(object)
 
     table = EPGPRankTable(data)

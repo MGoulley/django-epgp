@@ -2,6 +2,11 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.db.models import Sum, FloatField
+from django.db.models import F
+from django.db.models.functions import Round
+from django.db.models.functions import Cast, Coalesce
+
 
 class Player(models.Model):
     id = models.AutoField(primary_key=True)
@@ -200,6 +205,19 @@ class EPGPLogEntryType(models.TextChoices):
         STANDBY = "STANDBY", _("Bench")
         OTHER = "OTHER", _("Autre")
 
+class CustomEPGPLogEntryQuerySet(models.QuerySet):
+    def getRankPerPlayer(self):
+        return self.values("target_player_id__name").annotate(
+                total_ep=Sum('ep_delta'), 
+                total_gp=Sum('gp_delta')
+            ).annotate(
+                rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField())*100.0, 3), Cast(F('total_ep'), FloatField()))
+            ).order_by("-rank")
+
+    def getRankPerCharacter(self):
+        # TODO: Select EPGP par personnage
+        return self.select_related("target_player_id")
+
 class EPGPLogEntry(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='ID')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créée le')
@@ -219,5 +237,10 @@ class EPGPLogEntry(models.Model):
     canceled = models.BooleanField(default=False, verbose_name='Validité')
     canceled_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_canceled_by', blank=True, null=True, verbose_name='Effacé par')
 
+    objects = CustomEPGPLogEntryQuerySet.as_manager()
+
     def __str__(self): 
          return str(self.user_id) + " accorde " + str(self.ep_delta) + " EP et " +  str(self.gp_delta) + " GP à " + str(self.target_player_id) + " " + str(self.loot_id)
+
+
+
