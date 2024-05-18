@@ -18,6 +18,12 @@
             <div class="card-header">
                 <i class="fa fa-align-justify"></i>
                 <h2>Liste des loot</h2>
+                {% if filter %}
+                    <form action="" method="get" class="post-form">
+                        {% bootstrap_form filter.form layout='block' %}
+                        {% bootstrap_button 'filter' %}
+                    </form>
+                {% endif %}
             </div>
             <div class="card-body">
                 {% render_table table %}

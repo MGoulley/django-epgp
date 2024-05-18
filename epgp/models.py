@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 class Player(models.Model):
@@ -92,7 +93,7 @@ class Loot(models.Model):
             case 13 | 15 | 21 | 25 | 26 | 28 :
                 variateur = 0.4
             case 0 :
-                variateur = 2.0
+                variateur = 1.0
             case _  : 
                 variateur = 1.0
         return int(round(variateur * self.ilvl, 0))
@@ -109,7 +110,7 @@ class Loot(models.Model):
         slotName = ""
         match self.gameSlot:
             case 0 : 
-                slotName = "Monture"
+                slotName = "Token/Monture"
             case 1 : 
                 slotName = "Tête"
             case 2 : 
@@ -204,7 +205,7 @@ class EPGPLogEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créée le')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Modifié le')
     target_player_id = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_target_player_id')
-    source_player_id = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_source_player_id')
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_user_id', default=1)
     type = models.CharField(
         max_length=20,
         choices=EPGPLogEntryType,
@@ -216,7 +217,7 @@ class EPGPLogEntry(models.Model):
     ep_delta = models.IntegerField(verbose_name='Modification en EP')
     gp_delta = models.IntegerField(verbose_name='Modification en GP')
     canceled = models.BooleanField(default=False, verbose_name='Validité')
-    canceled_by = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_canceled_by', blank=True, null=True, verbose_name='Effacé par')
+    canceled_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_canceled_by', blank=True, null=True, verbose_name='Effacé par')
 
     def __str__(self): 
-         return str(self.source_player_id) + " accorde " + str(self.ep_delta) + " EP et " +  str(self.gp_delta) + " GP à " + str(self.target_player_id) + " " + str(self.loot_id)
+         return str(self.user_id) + " accorde " + str(self.ep_delta) + " EP et " +  str(self.gp_delta) + " GP à " + str(self.target_player_id) + " " + str(self.loot_id)

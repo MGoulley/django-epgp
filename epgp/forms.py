@@ -43,7 +43,6 @@ class RaidForm(forms.Form):
 
 class GiveRaidForm(forms.Form):
     raid = forms.ModelChoiceField(label="Raid", queryset=Raid.objects.all())
-    give_by = forms.ModelChoiceField(label="Attribué par", queryset=Player.objects.filter(isOfficier=True))
     reason = forms.CharField(label="Raison")
     ep_delta = forms.IntegerField(label="Gain de EP")
 
@@ -52,14 +51,9 @@ class GiveRaidForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-class GiveLootForm(forms.ModelForm):
+class GiveLootForm(forms.Form):
     target_player = forms.ModelChoiceField(label="Nom du personnage qui recoit un item", queryset=Player.objects.all())
-    give_by = forms.ModelChoiceField(label="Attribué par", queryset=Player.objects.filter(isOfficier=True))
-
-    class Meta:
-        widgets = {
-            'loot': autocomplete.ModelSelect2(url='loot-autocomplete')
-        }
+    loot_id = autocomplete.ModelSelect2(url='loot-autocomplete')
     
     def __init__(self, *args, **kwargs):
         super(GiveLootForm, self).__init__(*args, **kwargs)

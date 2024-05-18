@@ -15,8 +15,9 @@ urlpatterns = [
     path("raids", login_required(RaidListView.as_view())),
     path("raid/add", login_required(views.addRaid), name="newraid"),
     path("epgp", EPGPLogEntryListView.as_view()),
+    path("epgp/ranking", views.EPGPPlayerRanking, name="ranking"),
     path("epgp/giveraid", login_required(views.giveRaidEPGP), name="giveraid"),
     path("epgp/giveloot", login_required(views.giveLootEPGP), name="giveloot"),
-    re_path(r'^loot-autocomplete/$', LootAutocomplete.as_view(), name='loot-autocomplete',),
-    re_path(r'^loot-autocomplete/<str:q>$', LootAutocomplete.as_view(model=Loot), name='loot-autocomplete',),
+    path('loot-autocomplete/', LootAutocomplete.as_view(model=Loot), name='loot-autocomplete',),
+    path('loot-autocomplete/<str:q>', LootAutocomplete.as_view(model=Loot), name='loot-autocomplete',),
 ]
