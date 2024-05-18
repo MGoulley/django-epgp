@@ -23,9 +23,9 @@ class EPGPRankTable(tables.Table):
         order_by = '-ranking'
 
 class LootTable(tables.Table):
-    gpValue = tables.Column("Valeur en GP", accessor=tables.A('gpValue'), orderable=True)
-    wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='<a href="https://www.wowhead.com/cata/item={{record.inGameId}}">WowHead</a>')
-    slot = tables.Column("Slot", accessor=tables.A('slot'), orderable=True)
+    gpValue = tables.Column("Valeur en GP", accessor=tables.A('gpValue'), orderable=False)
+    wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='<a href="https://www.wowhead.com/cata/item={{record.inGameId}}">WowHead</a>', orderable=False)
+    slot = tables.Column("Slot", accessor=tables.A('slot'), orderable=False)
     class Meta:
         model = Loot
         fields = ("name", "ilvl", "slot", "gpValue", "wowHeadUrl")
