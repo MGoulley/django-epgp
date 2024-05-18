@@ -4,4 +4,4 @@ from .models import *
 class LootFilter(FilterSet):
     class Meta:
         model = Loot
-        fields = {"name": ["exact", "contains"], "inGameId": ["exact"]}
+        fields = {"name": ["contains"], "inGameId": ["exact"]}

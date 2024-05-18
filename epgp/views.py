@@ -26,7 +26,7 @@ class LootListView(SingleTableMixin, FilterView):
     template_name = 'loot/index.html'
     filterset_class = LootFilter
     
-    def get_table_data(self):
+    def get_queryset(self):
         return Loot.objects.filter(ilvl__lte = 430)
 
 class LootAutocomplete(autocomplete.Select2QuerySetView):
