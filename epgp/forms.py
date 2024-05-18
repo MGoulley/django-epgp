@@ -1,6 +1,11 @@
 from django import forms
 from .models import *
-from dal import autocomplete
+from django.core.exceptions import ValidationError
+
+def validate_loot_exists(value):
+    incident = Loot.objects.filter(inGameId=value)
+    if not incident: # check if any object exists
+        raise ValidationError("L'item n'existe pas") 
 
 class PlayerForm(forms.Form):
     name = forms.CharField(label="Nom du joueur")
@@ -53,7 +58,9 @@ class GiveRaidForm(forms.Form):
 
 class GiveLootForm(forms.Form):
     character = forms.ModelChoiceField(label="Nom du personnage qui recoit un item", queryset=Character.objects.all())
-    loot_id = forms.IntegerField(label="Identifiant de l'item")
+    loot_id = forms.IntegerField(label="Identifiant de l'item", validators=[validate_loot_exists])
+
+    error_css_class = 'alert alert-warning'
     
     def __init__(self, *args, **kwargs):
         super(GiveLootForm, self).__init__(*args, **kwargs)
