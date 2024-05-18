@@ -6,11 +6,6 @@ from django_tables2.views import SingleTableMixin
 from dal import autocomplete
 from django.template import loader
 
-from django.db.models import Sum, FloatField
-from django.db.models import F
-from django.db.models.functions import Round
-from django.db.models.functions import Cast, Coalesce
-
 from .filters import *
 from .forms import *
 from .models import *
@@ -20,7 +15,6 @@ from .tables import *
 def pages(request):
     context = {}
     try:
-
         load_template = request.path.split('/')[-1]
         template = loader.get_template('pages/' + load_template)
         return HttpResponse(template.render(context, request))
@@ -97,7 +91,7 @@ def addPlayer(request):
                 type=EPGPLogEntryType.NEWPLAYER, 
                 reason="Bienvenue chez les belettes", 
                 ep_delta=500, 
-                gp_delta=1
+                gp_delta=0
             )
             log.save()
             return HttpResponseRedirect("/players")

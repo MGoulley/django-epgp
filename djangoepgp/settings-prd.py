@@ -162,3 +162,9 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'),]
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://lesbelettesdebrill.fr']
