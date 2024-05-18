@@ -83,6 +83,7 @@ def addPlayer(request):
             player = Player(
                 name=form.cleaned_data.get("name"), 
                 discordTag=form.cleaned_data.get("discordTag")
+                isOfficier=form.cleaned_data.get("isOfficier")
             )
             player.save()
             log = EPGPLogEntry(

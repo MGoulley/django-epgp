@@ -223,7 +223,7 @@ class EPGPLogEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créée le')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Modifié le')
     target_player_id = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_target_player_id', verbose_name='Joueur')
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_user_id', default=1)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_user_id', verbose_name='Attributeur', default=1)
     type = models.CharField(
         max_length=20,
         choices=EPGPLogEntryType,
@@ -235,7 +235,7 @@ class EPGPLogEntry(models.Model):
     ep_delta = models.IntegerField(verbose_name='Modification en EP')
     gp_delta = models.IntegerField(verbose_name='Modification en GP')
     canceled = models.BooleanField(default=False, verbose_name='Validité')
-    canceled_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_canceled_by', blank=True, null=True, verbose_name='Effacé par')
+    canceled_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_canceled_by', blank=True, null=True, verbose_name='Annulé par')
 
     objects = CustomEPGPLogEntryQuerySet.as_manager()
 
