@@ -2,6 +2,7 @@
 <header class="c-header c-header-light c-header-fixed">
   <button class="c-header-toggler c-class-toggler d-lg-none mr-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show"><span class="c-header-toggler-icon"></span></button><a class="c-header-brand d-sm-none" href="#"><img class="c-header-brand" src="/static/assets/brand/coreui-base.svg" width="97" height="46" alt="CoreUI Logo"></a>
   <button class="c-header-toggler c-class-toggler ml-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true"><span class="c-header-toggler-icon"></span></button>
+  {% if user.is_authenticated %}
   <ul class="c-header-nav ml-auto mr-4">
     <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
         <div class="c-avatar"><img class="c-avatar-img" src="/static/assets/img/avatars/11.png" alt="user@email.com"></div>
@@ -14,10 +15,11 @@
           <div class="dropdown-divider"></div>
           <svg class="c-icon mr-2">
             <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-          </svg> Profile</a><a class="dropdown-item" href="#">
+          </svg> Profile <span class="badge badge-info">WIP</span></a>
+          <a class="dropdown-item" href="#">
           <svg class="c-icon mr-2">
             <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
-          </svg> Settings</a>
+          </svg> Settings <span class="badge badge-info">WIP</span></a>
         <div class="dropdown-divider"></div>
         <form class="form-inline" method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit" class="btn btn-primary px-4">
             <svg class="c-icon mr-2">
@@ -26,4 +28,10 @@
       </div>
     </li>
   </ul>
+  {% else %}
+    <a class="c-header-nav ml-auto mr-4 c-header-nav-item btn-sm btn-primary px-4" href="{% url 'login' %}"><svg class="c-icon mr-2">
+      <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-lock-unlocked"></use>
+    </svg> Login </a>
+    
+  {% endif %}
 </header>
