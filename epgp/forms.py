@@ -17,6 +17,14 @@ class PlayerForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+class DecayForm(forms.Form):
+    decay = forms.FloatField(label="Valeur du decay (en pourcentage)")
+
+    def __init__(self, *args, **kwargs):
+        super(DecayForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 class CharacterForm(forms.Form):
     playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
     name = forms.CharField(label="Nom du personnage")

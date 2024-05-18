@@ -2,17 +2,18 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Sum, FloatField
-from django.db.models import F
+from django.db.models import Sum, FloatField, IntegerField
+from django.db.models import F, Value
 from django.db.models.functions import Round
 from django.db.models.functions import Cast, Coalesce
-
 
 class Player(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, verbose_name='Joueur')
     discordTag = models.CharField(max_length=40, unique=True, verbose_name='Tag discord')
     isOfficier = models.BooleanField(default=False, verbose_name='Officier')
+
+    objects = models.Manager()
 
     def __str__(self): 
          return self.name
@@ -213,6 +214,13 @@ class CustomEPGPLogEntryQuerySet(models.QuerySet):
             ).annotate(
                 rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField())*100.0, 3), Cast(F('total_ep'), FloatField()))
             ).order_by("-rank")
+    
+    def getTotalEPPerPlayer(self, decay):
+        return self.values("target_player_id").annotate(
+                total_ep=Sum('ep_delta')
+            ).annotate(
+                decay=Cast((F("total_ep") * (Value(decay) / 100)), IntegerField())
+            )
 
     def getRankPerCharacter(self):
         # TODO: Select EPGP par personnage

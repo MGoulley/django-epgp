@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django_tables2 import SingleTableView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
-from dal import autocomplete
 from django.template import loader
 
 from .filters import *
@@ -39,15 +38,6 @@ class LootListView(SingleTableMixin, FilterView):
     
     def get_queryset(self):
         return Loot.objects.filter(ilvl__lte = 430)
-
-class LootAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Loot.objects.all()
-
-        if self.q:
-            qs = qs.filter(name__icontains=self.q)
-
-        return qs
 
 class RaidListView(SingleTableView):
     model = Raid
@@ -183,6 +173,29 @@ def giveLootEPGP(request):
         form = GiveLootForm()
 
     return render(request, "epgp/giveloot.html", {"form": form})
+
+def applyDecay(request):
+    if request.method == "POST":
+        form = DecayForm(request.POST)
+        if form.is_valid():
+            decay=form.cleaned_data.get("decay")
+            objects = EPGPLogEntry.objects.getTotalEPPerPlayer(decay)
+            for player in objects:
+                log = EPGPLogEntry(
+                    target_player_id=Player.objects.get(id=player["target_player_id"]), 
+                    user_id=request.user, 
+                    type=EPGPLogEntryType.DECAY, 
+                    reason="Decay de " + str(decay) + "%", 
+                    ep_delta=-1 * player["decay"], 
+                    gp_delta=0
+                )
+                log.save()
+                
+            return HttpResponseRedirect("/epgp")
+    else:
+        form = DecayForm()
+
+    return render(request, "epgp/decay.html", {"form": form})
 
 def index(request):
     return render(request, "index.html")
