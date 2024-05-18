@@ -4,6 +4,7 @@ from django_tables2 import SingleTableView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from dal import autocomplete
+from django.template import loader
 
 from django.db.models import Sum, FloatField
 from django.db.models.functions import Cast, Coalesce
@@ -12,6 +13,20 @@ from .filters import *
 from .forms import *
 from .models import *
 from .tables import *
+
+
+def pages(request):
+    context = {}
+    try:
+
+        load_template = request.path.split('/')[-1]
+        template = loader.get_template('pages/' + load_template)
+        return HttpResponse(template.render(context, request))
+
+    except:
+
+        template = loader.get_template( 'pages/error-404.html' )
+        return HttpResponse(template.render(context, request))
 
 class PlayerListView(SingleTableView):
     model = Player
@@ -141,14 +156,13 @@ def giveRaidEPGP(request):
         form = GiveRaidForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            from_user = form.cleaned_data.get("give_by")
             raid_id = form.cleaned_data.get("raid").id
             reason = form.cleaned_data.get("reason")
             ep_delta = form.cleaned_data.get("ep_delta")
             characters = Raid.objects.get(id=raid_id).participants.all()
             for player_id in characters.values_list('playerId', flat=True).distinct():
                 player = Player.objects.get(id=player_id)
-                log = EPGPLogEntry(target_player_id=player, user_id=from_user, type=EPGPLogEntryType.PARTICIPATE, reason=reason, ep_delta=ep_delta, gp_delta=0)
+                log = EPGPLogEntry(target_player_id=player, user_id=request.user, type=EPGPLogEntryType.PARTICIPATE, reason=reason, ep_delta=ep_delta, gp_delta=0)
                 log.save()
             return HttpResponseRedirect("/epgp")
 
@@ -159,24 +173,23 @@ def giveRaidEPGP(request):
     return render(request, "epgp/giveraid.html", {"form": form})
 
 def giveLootEPGP(request):
-    # if this is a POST request we need to process the form data
     if request.method == "POST":
-        # create a form instance and populate it with data from the request:
         form = GiveLootForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
-            from_user = form.cleaned_data.get("give_by")
-            raid_id = form.cleaned_data.get("raid").id
-            reason = form.cleaned_data.get("reason")
-            ep_delta = form.cleaned_data.get("ep_delta")
-            characters = Raid.objects.get(id=raid_id).participants.all()
-            for player_id in characters.values_list('playerId', flat=True).distinct():
-                player = Player.objects.get(id=player_id)
-                log = EPGPLogEntry(target_player_id=player, user_id=from_user, type=EPGPLogEntryType.PARTICIPATE, reason=reason, ep_delta=ep_delta, gp_delta=0)
-                log.save()
+            character = form.cleaned_data.get("character")
+            player = character.playerId
+            loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
+            gpValue = loot.gpValue
+            log = EPGPLogEntry(
+                target_player_id=player, 
+                user_id=request.user, 
+                type=EPGPLogEntryType.LOOT,
+                loot_id=loot,
+                ep_delta=0, 
+                gp_delta=gpValue
+            )
+            log.save()
             return HttpResponseRedirect("/epgp")
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = GiveLootForm()
 

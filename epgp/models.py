@@ -204,7 +204,7 @@ class EPGPLogEntry(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='ID')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créée le')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Modifié le')
-    target_player_id = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_target_player_id')
+    target_player_id = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_target_player_id', verbose_name='Joueur')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_user_id', default=1)
     type = models.CharField(
         max_length=20,

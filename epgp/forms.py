@@ -52,8 +52,8 @@ class GiveRaidForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class GiveLootForm(forms.Form):
-    target_player = forms.ModelChoiceField(label="Nom du personnage qui recoit un item", queryset=Player.objects.all())
-    loot_id = autocomplete.ModelSelect2(url='loot-autocomplete')
+    character = forms.ModelChoiceField(label="Nom du personnage qui recoit un item", queryset=Character.objects.all())
+    loot_id = forms.IntegerField(label="Identifiant de l'item")
     
     def __init__(self, *args, **kwargs):
         super(GiveLootForm, self).__init__(*args, **kwargs)

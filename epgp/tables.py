@@ -32,7 +32,7 @@ class LootTable(tables.Table):
         order_by = '-ilvl'
 
 class EPGPLogEntryTable(tables.Table):
-    wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='<a href="https://www.wowhead.com/cata/item={{record.loot_id.inGameId}}">WowHead</a>')
+    wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)
     class Meta:
         model = EPGPLogEntry
         fields = ("id", "updated_at", "created_at", "target_player_id", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta", "user_id", "canceled", "canceled_by")
