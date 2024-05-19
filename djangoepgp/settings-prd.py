@@ -171,3 +171,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = ['https://lesbelettesdebrill.fr']
+
+
+# SPECIFIQUE EPGP
+EP_NEWPLAYER = 200
+EP_STANDBY = 20

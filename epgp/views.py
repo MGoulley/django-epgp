@@ -5,6 +5,8 @@ from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.template import loader
 
+from django.conf import settings
+
 from .filters import *
 from .forms import *
 from .models import *
@@ -81,7 +83,7 @@ def addPlayer(request):
                 user_id=request.user, 
                 type=EPGPLogEntryType.NEWPLAYER, 
                 reason="Bienvenue chez les belettes", 
-                ep_delta=500, 
+                ep_delta=settings.EP_NEWPLAYER, 
                 gp_delta=0
             )
             log.save()
@@ -306,7 +308,7 @@ def standby(request):
                 user_id=request.user, 
                 type=EPGPLogEntryType.STANDBY, 
                 reason="Bench pour le raid " + raid.instance, 
-                ep_delta=20, 
+                ep_delta=settings.EP_STANDBY, 
                 gp_delta=0
             )
             log.save()
