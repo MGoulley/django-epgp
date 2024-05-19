@@ -46,10 +46,10 @@ class Character(models.Model):
         TANK = "TANK", _("Tank")
 
     id = models.AutoField(primary_key=True)
-    playerId = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="owner")
-    name = models.CharField(max_length=50, unique=True, verbose_name='Personnage')
+    playerId = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="owner", verbose_name='Nom du Joueur')
+    name = models.CharField(max_length=50, verbose_name='Nom du personnage')
     level = models.IntegerField(verbose_name='Niveau')
-    ilvl = models.IntegerField(verbose_name='ilvl')
+    ilvl = models.IntegerField(verbose_name="Niveau d'item")
     race = models.CharField(
         max_length=20,
         choices=CharacterRace,

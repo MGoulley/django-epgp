@@ -49,7 +49,7 @@ class CharacterListView(SingleTableView):
     table_class = CharacterTable
     template_name = 'character/index.html'
     def get_table_data(self):
-        return Character.objects.values("name", "level", "ilvl", "race", "classe", "specMain", "specAlt", "playerId__name")
+        return Character.objects.values("name", "level", "ilvl", "race", "classe", "specMain", "specAlt", "playerId__name", "id")
 
 def EPGPPlayerRanking(request):
     data = []
@@ -90,6 +90,25 @@ def addPlayer(request):
         form = PlayerForm()
 
     return render(request, "player/add.html", {"form": form})
+
+def editCharacter(request, id):
+    character = Character.objects.get(id=id)
+    if request.method == "POST":
+        form = CharacterForm(request.POST)
+        if form.is_valid():
+            character.name = form.cleaned_data.get("name")
+            character.level = form.cleaned_data.get("level")
+            character.ilvl = form.cleaned_data.get("ilvl")
+            character.race = form.cleaned_data.get("race")
+            character.classe = form.cleaned_data.get("classe")
+            character.specMain = form.cleaned_data.get("specMain")
+            character.specAlt = form.cleaned_data.get("specAlt")
+            character.save()
+            return HttpResponseRedirect("/characters")
+    else:  
+        form = CharacterForm(instance=character)
+
+    return render(request, "character/edit.html", {"form": form})
 
 def addCharacter(request):
     if request.method == "POST":

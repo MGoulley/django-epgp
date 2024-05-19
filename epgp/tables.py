@@ -5,11 +5,20 @@ class PlayerTable(tables.Table):
     class Meta:
         model = Player
         fields = ("name", "discordTag", "isOfficier")
+    
+    def before_render(self, request):
+        if not request.user.is_authenticated:
+            self.columns.hide('discordTag')
 
 class CharacterTable(tables.Table):
+    edit = tables.TemplateColumn(verbose_name="Edit", template_code='<a href="{{ request.path }}/edit/{{record.id}}">Edit</a>', orderable=False)
     class Meta:
         model = Character
-        fields = ("name", "level", "ilvl", "race", "classe", "specMain", "specAlt", "playerId__name")
+        fields = ("name", "level", "ilvl", "race", "classe", "specMain", "specAlt", "playerId__name", "edit")
+
+    def before_render(self, request):
+        if not request.user.is_authenticated:
+            self.columns.hide('edit')
 
 class EPGPRankTable(tables.Table):
     joueur = tables.columns.TemplateColumn(template_code=u"""{{ record.target_player_id__name }}""", orderable=True, verbose_name='Joueur')

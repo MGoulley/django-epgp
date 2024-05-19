@@ -13,6 +13,7 @@ urlpatterns = [
     path("players/<str:name>", views.player),
     path("characters", CharacterListView.as_view()),
     path("character/add", login_required(views.addCharacter), name="newcharacter"),
+    path("characters/edit/<int:id>", login_required(views.editCharacter), name="editcharacter"),
     path("loots", LootListView.as_view()),
     path("raids", login_required(RaidListView.as_view())),
     path("raid/add", login_required(views.addRaid), name="newraid"),

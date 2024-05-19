@@ -55,15 +55,10 @@ class StandbyForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-class CharacterForm(forms.Form):
-    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
-    name = forms.CharField(label="Nom du personnage")
-    level = forms.IntegerField(label="Niveau")
-    ilvl = forms.IntegerField(label="Niveau d'item")
-    race = forms.ChoiceField(label="Race", choices=Character.CharacterRace.choices,)
-    classe = forms.ChoiceField(label="Classe", choices=Character.CharacterClass.choices,)
-    specMain = forms.ChoiceField(label="Spé principale", choices=Character.CharacterSpec.choices,)
-    specAlt = forms.ChoiceField(label="Spé secondaire", choices=Character.CharacterSpec.choices,)
+class CharacterForm(forms.ModelForm):
+    class Meta:
+        model = Character
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(CharacterForm, self).__init__(*args, **kwargs)

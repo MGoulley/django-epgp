@@ -3,7 +3,8 @@ PROD READY : https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # Roadmap
 
-!character.update <character:string> [--level <:int> --race <:string> --class <:string> --guild <:string> --spec1 <:string> --spec2 <:string>] - Updates character information manually.
+Ajouter lien Logs dans raid
+Pouvoir lier LogEPGP avec un raid
 !item.distribution <item:string> <raid:string> [<...character:string>] [--min-clears <n:int>] [--raid-size <n:int>] - Tool to help distribute a piece of loot evenly amongst players.
 !epgp.totals [--sort <'EP'|'GP'|'ITEMS'|'PRIORITY'(default)>] - Display EPGP standings with total EPGP earned.
 !epgp [<character:string>] - Displays EPGP for a character.
