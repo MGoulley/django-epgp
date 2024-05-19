@@ -68,7 +68,7 @@ class CharacterForm(forms.ModelForm):
 class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
         template_name = 'forms/widgets/custom.html'
 
-class RaidForm(forms.Form):
+class RaidForm(forms.ModelForm):
     played_at = forms.DateField(label="Débuté le", initial=datetime.now)
     instance = forms.ChoiceField(label="Instance", choices=Raid.RaidInstance.choices,)
     participants = forms.ModelMultipleChoiceField(label="Participants",
@@ -77,6 +77,10 @@ class RaidForm(forms.Form):
     )
     warcraftLogs = forms.URLField(max_length=200, label='URL Warcraft Logs', required=False)
     commentaire = forms.CharField(label="Commentaire", required=False)
+
+    class Meta:
+        model = Raid
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(RaidForm, self).__init__(*args, **kwargs)

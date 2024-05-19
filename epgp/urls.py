@@ -17,6 +17,7 @@ urlpatterns = [
     path("loots", LootListView.as_view()),
     path("raids", login_required(RaidListView.as_view())),
     path("raid/add", login_required(views.addRaid), name="newraid"),
+    path("raids/edit/<int:id>", login_required(views.editRaid), name="editraid"),
     path("epgp", EPGPLogEntryListView.as_view()),
     path("epgp/ranking", views.EPGPPlayerRanking, name="ranking"),
     path("epgp/giveraid", login_required(views.giveRaidEPGP), name="giveraid"),

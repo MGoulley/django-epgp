@@ -131,6 +131,23 @@ def addCharacter(request):
 
     return render(request, "character/add.html", {"form": form})
 
+def editRaid(request, id):
+    raid = Raid.objects.get(id=id)
+    if request.method == "POST":
+        form = RaidForm(request.POST)
+        if form.is_valid():
+            raid.played_at = form.cleaned_data.get("played_at")
+            raid.instance = form.cleaned_data.get("instance")
+            raid.warcraftLogs = form.cleaned_data.get("warcraftLogs")
+            raid.commentaire = form.cleaned_data.get("commentaire")
+            raid.save()
+            raid.participants.set(form.cleaned_data.get("participants"))
+            return HttpResponseRedirect("/raids")
+    else:  
+        form = RaidForm(instance=raid)
+
+    return render(request, "raid/edit.html", {"form": form})
+
 def addRaid(request):
     if request.method == "POST":
         form = RaidForm(request.POST)
