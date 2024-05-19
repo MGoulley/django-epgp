@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     'epgp',
     'account',
+    'django.forms'
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

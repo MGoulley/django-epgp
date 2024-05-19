@@ -1,0 +1,9 @@
+<div class="row">
+    {% for group, options, index in widget.optgroups %}
+      {% for option in options %}
+        <div class="col-md-3">
+          {% include option.template_name with widget=option %}
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>

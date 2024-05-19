@@ -51,7 +51,12 @@ class EPGPLogEntryTable(tables.Table):
         order_by = '-updated_at'
 
 class RaidTable(tables.Table):
+    edit = tables.TemplateColumn(verbose_name="Edit", template_code='<a href="{{ request.path }}/edit/{{record.id}}">Edit</a>', orderable=False)
     class Meta:
         model = Raid
-        fields = ("played_at", "instance", "participants", "commentaire")
+        fields = ("played_at", "instance", "participants", "warcraftLogs", "commentaire", "edit")
         order_by = '-played_at'
+    
+    def before_render(self, request):
+        if not request.user.is_authenticated:
+            self.columns.hide('edit')

@@ -191,6 +191,7 @@ class Raid(models.Model):
         verbose_name='Instance',
     )
     participants = models.ManyToManyField(Character, verbose_name='Participants', related_name='participant')
+    warcraftLogs = models.URLField(blank=True, null=True, max_length=200, verbose_name='URL Warcraft Logs')
     commentaire = models.CharField(blank=True, null=True, max_length=200, verbose_name='Commentaire')
 
     def __str__(self): 

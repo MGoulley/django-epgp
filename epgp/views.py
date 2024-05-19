@@ -160,7 +160,14 @@ def giveRaidEPGP(request):
             characters = Raid.objects.get(id=raid_id).participants.all()
             for player_id in characters.values_list('playerId', flat=True).distinct():
                 player = Player.objects.get(id=player_id)
-                log = EPGPLogEntry(target_player_id=player, user_id=request.user, type=EPGPLogEntryType.PARTICIPATE, reason=reason, ep_delta=ep_delta, gp_delta=0)
+                log = EPGPLogEntry(
+                    target_player_id=player, 
+                    user_id=request.user, 
+                    type=EPGPLogEntryType.PARTICIPATE, 
+                    reason=reason, 
+                    ep_delta=ep_delta, 
+                    gp_delta=0
+                )
                 log.save()
             return HttpResponseRedirect("/epgp")
 
