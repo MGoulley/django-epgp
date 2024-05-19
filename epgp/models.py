@@ -106,7 +106,7 @@ class Loot(models.Model):
     
     @property
     def wowHeadUrl(self):
-        baseUrl="https://www.wowhead.com/cata/item="
+        baseUrl="https://www.wowhead.com/cata/fr/item="
         prefix = "<a href=\"" + baseUrl
         suffix = "\">WowHead</a>"
         return prefix + str(self.inGameId) + suffix

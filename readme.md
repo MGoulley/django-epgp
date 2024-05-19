@@ -3,7 +3,9 @@ PROD READY : https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # Roadmap
 
-Ajouter lien Logs dans raid
+Ajouter item wowhead en francais
+Ajouter liste des raids avec les boss
+
 
 !item.distribution <item:string> <raid:string> [<...character:string>] [--min-clears <n:int>] [--raid-size <n:int>] - Tool to help distribute a piece of loot evenly amongst players.
 !epgp.totals [--sort <'EP'|'GP'|'ITEMS'|'PRIORITY'(default)>] - Display EPGP standings with total EPGP earned.
