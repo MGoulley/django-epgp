@@ -25,6 +25,17 @@ class DecayForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+class DockForm(forms.Form):
+    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
+    dock_value_ep = forms.IntegerField(label="Malus en EP", required=False, initial=0)
+    dock_value_gp = forms.IntegerField(label="Malus en GP", required=False, initial=0)
+    reason = forms.CharField(label="Raison", required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(DockForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 class CharacterForm(forms.Form):
     playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
     name = forms.CharField(label="Nom du personnage")

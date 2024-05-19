@@ -197,6 +197,42 @@ def applyDecay(request):
 
     return render(request, "epgp/decay.html", {"form": form})
 
+def applyDock(request):
+    if request.method == "POST":
+        form = DockForm(request.POST)
+        if form.is_valid():
+            dock_value_ep = form.cleaned_data.get("dock_value_ep")
+            dock_value_gp = form.cleaned_data.get("dock_value_gp")
+            reason = form.cleaned_data.get("reason")
+            
+            if (dock_value_ep != 0 and dock_value_gp == 0) or (dock_value_ep == 0 and dock_value_gp != 0):
+                if dock_value_ep != 0:
+                    log = EPGPLogEntry(
+                        target_player_id=form.cleaned_data.get("playerId"), 
+                        user_id=request.user, 
+                        type=EPGPLogEntryType.DOCKEP, 
+                        reason=reason, 
+                        ep_delta=-1 * abs(dock_value_ep), 
+                        gp_delta=0
+                    )
+                    log.save()
+                elif dock_value_gp != 0:
+                    log = EPGPLogEntry(
+                        target_player_id=form.cleaned_data.get("playerId"), 
+                        user_id=request.user, 
+                        type=EPGPLogEntryType.DOCKGP, 
+                        reason=reason, 
+                        ep_delta=0, 
+                        gp_delta=abs(dock_value_gp)
+                    )
+                    log.save()
+                
+            return HttpResponseRedirect("/epgp")
+    else:
+        form = DockForm()
+
+    return render(request, "epgp/dock.html", {"form": form})
+
 def index(request):
     return render(request, "index.html")
 

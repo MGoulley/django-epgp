@@ -7,9 +7,7 @@ TODO List:
 - Faire une page de personnage : Affichage du personnage, 
 
 # Roadmap
-!epgp.decay - Performs EPGP decay on all players.
-!epgp.dock <ep:int> <reason:string> <...character:string> - Removes EP for poor performance.
-!epgp.dockgp <gp:int> <reason:string> <...character:string> - Awards GP for poor performance.
+
 !epgp.award.incentive <ep:int> <reason:string> <...character:string> - Awards EP for non-raid reasons.
 !epgp.award.standby <ep:int> <raid:string> <...character:string> [--note <:string>] [--skip <...character:string>] - Awards EP for standing by for a raid.
 !item.distribution <item:string> <raid:string> [<...character:string>] [--min-clears <n:int>] [--raid-size <n:int>] - Tool to help distribute a piece of loot evenly amongst players.
