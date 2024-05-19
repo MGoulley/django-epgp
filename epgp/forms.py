@@ -36,6 +36,16 @@ class DockForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+class GiveEPForm(forms.Form):
+    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
+    gain_ep = forms.IntegerField(label="Bonus en EP", required=True)
+    reason = forms.CharField(label="Raison", required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(GiveEPForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 class CharacterForm(forms.Form):
     playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
     name = forms.CharField(label="Nom du personnage")

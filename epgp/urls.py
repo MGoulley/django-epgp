@@ -20,6 +20,7 @@ urlpatterns = [
     path("epgp/ranking", views.EPGPPlayerRanking, name="ranking"),
     path("epgp/giveraid", login_required(views.giveRaidEPGP), name="giveraid"),
     path("epgp/giveloot", login_required(views.giveLootEPGP), name="giveloot"),
-    path("epgp/decay", views.applyDecay, name="decay"),
-    path("epgp/dock", views.applyDock, name="dock"),
+    path("epgp/decay", login_required(views.applyDecay), name="decay"),
+    path("epgp/dock", login_required(views.applyDock), name="dock"),
+    path("epgp/giveep", login_required(views.giveep), name="giveep"),
 ]

@@ -233,6 +233,26 @@ def applyDock(request):
 
     return render(request, "epgp/dock.html", {"form": form})
 
+def giveep(request):
+    if request.method == "POST":
+        form = GiveEPForm(request.POST)
+        if form.is_valid():
+            log = EPGPLogEntry(
+                target_player_id=form.cleaned_data.get("playerId"), 
+                user_id=request.user, 
+                type=EPGPLogEntryType.OTHER, 
+                reason=form.cleaned_data.get("reason"), 
+                ep_delta=abs(form.cleaned_data.get("gain_ep")), 
+                gp_delta=0
+            )
+            log.save()
+            
+            return HttpResponseRedirect("/epgp")
+    else:
+        form = GiveEPForm()
+
+    return render(request, "epgp/giveep.html", {"form": form})
+
 def index(request):
     return render(request, "index.html")
 

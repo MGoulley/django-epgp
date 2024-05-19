@@ -8,7 +8,6 @@ TODO List:
 
 # Roadmap
 
-!epgp.award.incentive <ep:int> <reason:string> <...character:string> - Awards EP for non-raid reasons.
 !epgp.award.standby <ep:int> <raid:string> <...character:string> [--note <:string>] [--skip <...character:string>] - Awards EP for standing by for a raid.
 !item.distribution <item:string> <raid:string> [<...character:string>] [--min-clears <n:int>] [--raid-size <n:int>] - Tool to help distribute a piece of loot evenly amongst players.
 !character.update <character:string> [--level <:int> --race <:string> --class <:string> --guild <:string> --spec1 <:string> --spec2 <:string>] - Updates character information manually.

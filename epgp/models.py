@@ -212,7 +212,7 @@ class CustomEPGPLogEntryQuerySet(models.QuerySet):
                 total_ep=Sum('ep_delta'), 
                 total_gp=Sum('gp_delta')
             ).annotate(
-                rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField())*100.0, 3), Cast(F('total_ep'), FloatField()))
+                rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField()), 3), Cast(F('total_ep'), FloatField()))
             ).order_by("-rank")
     
     def getTotalEPPerPlayer(self, decay):
