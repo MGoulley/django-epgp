@@ -3,7 +3,6 @@ PROD READY : https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # Roadmap
 
-Ajouter item wowhead en francais
 Ajouter liste des raids avec les boss
 
 

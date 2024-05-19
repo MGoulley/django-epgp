@@ -209,7 +209,7 @@ class EPGPLogEntryType(models.TextChoices):
 
 class CustomEPGPLogEntryQuerySet(models.QuerySet):
     def getRankPerPlayer(self):
-        return self.values("target_player_id__name").annotate(
+        return self.values("target_player__name").annotate(
                 total_ep=Sum('ep_delta'), 
                 total_gp=Sum('gp_delta')
             ).annotate(
@@ -217,7 +217,7 @@ class CustomEPGPLogEntryQuerySet(models.QuerySet):
             ).order_by("-rank")
     
     def getTotalEPPerPlayer(self, decay):
-        return self.values("target_player_id").annotate(
+        return self.values("target_player").annotate(
                 total_ep=Sum('ep_delta')
             ).annotate(
                 decay=Cast((F("total_ep") * (Value(decay) / 100)), IntegerField())
@@ -225,13 +225,13 @@ class CustomEPGPLogEntryQuerySet(models.QuerySet):
 
     def getRankPerCharacter(self):
         # TODO: Select EPGP par personnage
-        return self.select_related("target_player_id")
+        return self.select_related("target_player")
 
 class EPGPLogEntry(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='ID')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créée le')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Modifié le')
-    target_player_id = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_target_player_id', verbose_name='Joueur')
+    target_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player_target_player', verbose_name='Joueur')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_user_id', verbose_name='Attributeur', default=1)
     type = models.CharField(
         max_length=20,
@@ -249,7 +249,7 @@ class EPGPLogEntry(models.Model):
     objects = CustomEPGPLogEntryQuerySet.as_manager()
 
     def __str__(self): 
-         return str(self.user_id) + " accorde " + str(self.ep_delta) + " EP et " +  str(self.gp_delta) + " GP à " + str(self.target_player_id) + " " + str(self.loot_id)
+         return str(self.user_id) + " accorde " + str(self.ep_delta) + " EP et " +  str(self.gp_delta) + " GP à " + str(self.target_player) + " " + str(self.loot_id)
 
 
 

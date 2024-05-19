@@ -79,7 +79,7 @@ def addPlayer(request):
             )
             player.save()
             log = EPGPLogEntry(
-                target_player_id=player, 
+                target_player=player, 
                 user_id=request.user, 
                 type=EPGPLogEntryType.NEWPLAYER, 
                 reason="Bienvenue chez les belettes", 
@@ -180,7 +180,7 @@ def giveRaidEPGP(request):
             for player_id in characters.values_list('playerId', flat=True).distinct():
                 player = Player.objects.get(id=player_id)
                 log = EPGPLogEntry(
-                    target_player_id=player, 
+                    target_player=player, 
                     user_id=request.user, 
                     type=EPGPLogEntryType.PARTICIPATE, 
                     reason=reason, 
@@ -205,7 +205,7 @@ def giveLootEPGP(request):
             loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
             gpValue = loot.gpValue
             log = EPGPLogEntry(
-                target_player_id=player, 
+                target_player=player, 
                 user_id=request.user, 
                 type=EPGPLogEntryType.LOOT,
                 loot_id=loot,
@@ -227,7 +227,7 @@ def applyDecay(request):
             objects = EPGPLogEntry.objects.getTotalEPPerPlayer(decay)
             for player in objects:
                 log = EPGPLogEntry(
-                    target_player_id=Player.objects.get(id=player["target_player_id"]), 
+                    target_player=Player.objects.get(id=player["target_player"]), 
                     user_id=request.user, 
                     type=EPGPLogEntryType.DECAY, 
                     reason="Decay de " + str(decay) + "%", 
@@ -253,7 +253,7 @@ def applyDock(request):
             if (dock_value_ep != 0 and dock_value_gp == 0) or (dock_value_ep == 0 and dock_value_gp != 0):
                 if dock_value_ep != 0:
                     log = EPGPLogEntry(
-                        target_player_id=form.cleaned_data.get("playerId"), 
+                        target_player=form.cleaned_data.get("playerId"), 
                         user_id=request.user, 
                         type=EPGPLogEntryType.DOCKEP, 
                         reason=reason, 
@@ -263,7 +263,7 @@ def applyDock(request):
                     log.save()
                 elif dock_value_gp != 0:
                     log = EPGPLogEntry(
-                        target_player_id=form.cleaned_data.get("playerId"), 
+                        target_player=form.cleaned_data.get("playerId"), 
                         user_id=request.user, 
                         type=EPGPLogEntryType.DOCKGP, 
                         reason=reason, 
@@ -283,7 +283,7 @@ def giveep(request):
         form = GiveEPForm(request.POST)
         if form.is_valid():
             log = EPGPLogEntry(
-                target_player_id=form.cleaned_data.get("playerId"), 
+                target_player=form.cleaned_data.get("playerId"), 
                 user_id=request.user, 
                 type=EPGPLogEntryType.OTHER, 
                 reason=form.cleaned_data.get("reason"), 
@@ -304,7 +304,7 @@ def standby(request):
         if form.is_valid():
             raid = form.cleaned_data.get("raid")
             log = EPGPLogEntry(
-                target_player_id=form.cleaned_data.get("playerId"), 
+                target_player=form.cleaned_data.get("playerId"), 
                 user_id=request.user, 
                 type=EPGPLogEntryType.STANDBY, 
                 reason="Bench pour le raid " + raid.instance, 

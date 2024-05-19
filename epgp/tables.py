@@ -21,7 +21,7 @@ class CharacterTable(tables.Table):
             self.columns.hide('edit')
 
 class EPGPRankTable(tables.Table):
-    joueur = tables.columns.TemplateColumn(template_code=u"""{{ record.target_player_id__name }}""", orderable=True, verbose_name='Joueur')
+    joueur = tables.columns.TemplateColumn(template_code=u"""{{ record.target_player__name }}""", orderable=True, verbose_name='Joueur')
     total_ep = tables.columns.TemplateColumn(template_code=u"""{{ record.total_ep }}""", orderable=True, verbose_name='Total EP')
     gp = tables.columns.TemplateColumn(template_code=u"""{{ record.total_gp }}""", orderable=True, verbose_name='Total GP')
     ranking = tables.columns.TemplateColumn(template_code=u"""{{ record.rank }}""", orderable=True, verbose_name='Ratio EP/GP')
@@ -47,7 +47,7 @@ class EPGPLogEntryTable(tables.Table):
     wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)
     class Meta:
         model = EPGPLogEntry
-        fields = ("id", "updated_at", "created_at", "target_player_id", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta", "user_id", "canceled", "canceled_by")
+        fields = ("id", "updated_at", "created_at", "target_player", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta", "user_id", "canceled", "canceled_by")
         order_by = '-updated_at'
 
 class RaidTable(tables.Table):
