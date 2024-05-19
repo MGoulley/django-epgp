@@ -46,6 +46,15 @@ class GiveEPForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+class StandbyForm(forms.Form):
+    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
+    raid = forms.ModelChoiceField(label="Raid", error_messages={"required": "Choisir un raid"}, queryset=Raid.objects.all().order_by("-played_at"))
+
+    def __init__(self, *args, **kwargs):
+        super(StandbyForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 class CharacterForm(forms.Form):
     playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
     name = forms.CharField(label="Nom du personnage")

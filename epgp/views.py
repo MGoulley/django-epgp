@@ -253,6 +253,27 @@ def giveep(request):
 
     return render(request, "epgp/giveep.html", {"form": form})
 
+def standby(request):
+    if request.method == "POST":
+        form = StandbyForm(request.POST)
+        if form.is_valid():
+            raid = form.cleaned_data.get("raid")
+            log = EPGPLogEntry(
+                target_player_id=form.cleaned_data.get("playerId"), 
+                user_id=request.user, 
+                type=EPGPLogEntryType.STANDBY, 
+                reason="Bench pour le raid " + raid.instance, 
+                ep_delta=20, 
+                gp_delta=0
+            )
+            log.save()
+            
+            return HttpResponseRedirect("/epgp")
+    else:
+        form = StandbyForm()
+
+    return render(request, "epgp/standby.html", {"form": form})
+
 def index(request):
     return render(request, "index.html")
 

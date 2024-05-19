@@ -23,4 +23,5 @@ urlpatterns = [
     path("epgp/decay", login_required(views.applyDecay), name="decay"),
     path("epgp/dock", login_required(views.applyDock), name="dock"),
     path("epgp/giveep", login_required(views.giveep), name="giveep"),
+    path("epgp/standby", login_required(views.standby), name="standby"),
 ]

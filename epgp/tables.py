@@ -16,6 +16,9 @@ class EPGPRankTable(tables.Table):
     total_ep = tables.columns.TemplateColumn(template_code=u"""{{ record.total_ep }}""", orderable=True, verbose_name='Total EP')
     gp = tables.columns.TemplateColumn(template_code=u"""{{ record.total_gp }}""", orderable=True, verbose_name='Total GP')
     ranking = tables.columns.TemplateColumn(template_code=u"""{{ record.rank }}""", orderable=True, verbose_name='Ratio EP/GP')
+    
+    def get_caption_display(self):
+        return False
 
     class Meta:
         fields = ('joueur', 'total_ep', 'gp', 'ranking')
