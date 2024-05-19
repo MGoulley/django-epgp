@@ -200,17 +200,22 @@ def giveLootEPGP(request):
     if request.method == "POST":
         form = GiveLootForm(request.POST)
         if form.is_valid():
+            raid = form.cleaned_data.get("raid")
             character = form.cleaned_data.get("character")
             player = character.playerId
             loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
+            reduction = 1.0
+            if form.cleaned_data.get("reduction_reroll") == True:
+                reduction = settings.EP_STANDBY
             gpValue = loot.gpValue
             log = EPGPLogEntry(
                 target_player=player, 
                 user_id=request.user, 
                 type=EPGPLogEntryType.LOOT,
+                reason = "Reduction reroll " + str(reduction * 100) + "%",
                 loot_id=loot,
                 ep_delta=0, 
-                gp_delta=gpValue
+                gp_delta=int(gpValue * reduction)
             )
             log.save()
             return HttpResponseRedirect("/epgp")
@@ -307,7 +312,8 @@ def standby(request):
                 target_player=form.cleaned_data.get("playerId"), 
                 user_id=request.user, 
                 type=EPGPLogEntryType.STANDBY, 
-                reason="Bench pour le raid " + raid.instance, 
+                reason="Bench pour le raid " + raid.instance,
+                raid=raid,
                 ep_delta=settings.EP_STANDBY, 
                 gp_delta=0
             )

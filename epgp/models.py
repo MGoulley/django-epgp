@@ -239,6 +239,7 @@ class EPGPLogEntry(models.Model):
         default=EPGPLogEntryType.LOOT,
         verbose_name='Type',
     )
+    raid = models.ForeignKey(Raid, on_delete=models.CASCADE, related_name='raid_raid', blank=True, null=True, verbose_name='Raid')
     reason = models.CharField(max_length=200, blank=True, null=True, verbose_name='Raison')
     loot_id = models.ForeignKey(Loot, on_delete=models.CASCADE, related_name="loot", blank=True, null=True)
     ep_delta = models.IntegerField(verbose_name='Modification en EP')

@@ -72,7 +72,7 @@ class RaidForm(forms.ModelForm):
     played_at = forms.DateField(label="Débuté le", initial=datetime.now)
     instance = forms.ChoiceField(label="Instance", choices=Raid.RaidInstance.choices,)
     participants = forms.ModelMultipleChoiceField(label="Participants",
-        queryset=Character.objects.all(),
+        queryset=Character.objects.all().order_by("name"),
         widget=CustomCheckboxSelectMultiple()
     )
     warcraftLogs = forms.URLField(max_length=200, label='URL Warcraft Logs', required=False)
@@ -98,8 +98,11 @@ class GiveRaidForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class GiveLootForm(forms.Form):
+    raid = forms.ModelChoiceField(label="Raid", queryset=Raid.objects.all().order_by("-played_at"), initial=0)
     character = forms.ModelChoiceField(label="Nom du personnage qui recoit un item", queryset=Character.objects.all())
     loot_id = forms.IntegerField(label="Identifiant de l'item", validators=[validate_loot_exists])
+    reduction_reroll = forms.BooleanField(label="Reduction reroll", required=False, initial=False)
+    
 
     error_css_class = 'alert alert-warning'
     
