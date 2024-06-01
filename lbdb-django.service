@@ -1,0 +1,11 @@
+[Unit]
+Description=lbdb django runner
+After=network.target
+
+[Service]
+User=github
+WorkingDirectory=/opt/lbdb/django
+ExecStart=/opt/lbdb/django/venv/bin/python3.11 manage.py runserver 0.0.0.0:8000
+
+[Install]
+WantedBy=multi-user.target
