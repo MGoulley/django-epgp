@@ -3,4 +3,5 @@ django-tables2==2.6.0
 mysqlclient==2.2.4
 django-filter
 django-bootstrap5==24.2
-uwsgi
+gunicorn
+django-autocomplete-light
