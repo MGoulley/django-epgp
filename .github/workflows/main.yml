@@ -43,6 +43,6 @@ jobs:
     - name: install service
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sh ${{ secrets.WORK_DIR }}/django/install-service.sh && exit"
     - name: start service
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "systemctl --user daemon-reload && systemctl --user start lbdb-django.service && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "systemctl --user start lbdb-django.service && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
