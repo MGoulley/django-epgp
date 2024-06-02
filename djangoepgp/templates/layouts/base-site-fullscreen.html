@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="LBDB">
     <meta name="author" content="Matthias Goulley">
-    <meta name="keyword" content="MyWinery">
+    <meta name="keyword" content="LBDB">
 
     <title>
         LBDB - {% block title %}{% endblock %}
@@ -43,11 +43,14 @@
     {% block stylesheets %}{% endblock stylesheets %}
 
   </head>
-  <body class="c-app flex-row align-items-center">
+  <body class="c-app">
 
-    <div class="container">
-
+    <div class="c-body">
+      <main class="c-main">
         {% block content %}{% endblock content %}
+      </main>
+
+        
 
     </div>
 

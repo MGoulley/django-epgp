@@ -326,7 +326,19 @@ def standby(request):
     return render(request, "epgp/standby.html", {"form": form})
 
 def index(request):
-    return render(request, "index.html")
+    if request.user.is_authenticated:
+        return render(request, "index-auth.html")
+    else:
+        data = []
+        objects = EPGPLogEntry.objects.getRankPerPlayer()
+        for object in objects:
+            data.append(object)
+
+        tableranking = EPGPRankTable(data)
+
+        tablelog = EPGPLogEntryTable(EPGPLogEntry.objects.all())
+
+        return render(request, 'index.html', {'tableranking':tableranking, 'tablelog':tablelog})
 
 def player(request, name):
     return HttpResponse("GET PLAYER INFO OF " + name)

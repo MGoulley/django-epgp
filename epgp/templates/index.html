@@ -1,12 +1,24 @@
-{% extends "layouts/base-site.html" %}
-{% load i18n %}
+{% extends "layouts/base-site-fullscreen.html" %}
+{% load render_table from django_tables2 %}
 {% block title %} Accueil {% endblock %} 
 {% block content %}
-<div><h1>Bienvenue chez les belettes de Brill</h1></div>
-<div><img class="img-fluid" src="/static/assets/img/landing.jpg"></div>
+<div class="jumbotron jumbotron-fluid col-12">
+  <div class="container">
+    <h1 class="display-4">Les Belettes de Brill</h1>
+    <p class="lead">Bienvenue chez les belettes !</p>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header"><h5 class="card-title">Le ranking des belettes</h5></div>
+  <div class="card-body">
+    {% render_table tableranking %}
+  </div>
+</div>
 
+<div class="card mt-5">
+  <div class="card-header"><h5 class="card-title">Le détail</h5></div>
+  <div class="card-body">
+    {% render_table tablelog %}
+  </div>
+</div>
 {% endblock content %}
-
-{% block javascripts %}
-
-{% endblock javascripts %}
