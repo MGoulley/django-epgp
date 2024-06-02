@@ -1,12 +1,5 @@
 #!/bin/bash
 set -x
 
-source .venv/bin/activate
-
-python3.11 manage.py check --deploy
-python3.11 manage.py runserver 0.0.0.0:80
-uwsgi --ini lbdb_uwsgi.ini
-
-
-
-TODO ACL pour github + www.data
+source /opt/lbdb/django/venv/bin/activate
+/opt/lbdb/django/venv/bin/python3.11 /opt/lbdb/django/manage.py runserver 0.0.0.0:8000
