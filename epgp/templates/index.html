@@ -1,5 +1,10 @@
 {% extends "layouts/base-site-fullscreen.html" %}
 {% load render_table from django_tables2 %}
+{% load django_bootstrap5 %}
+{% block stylesheets %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+{% endblock stylesheets %}
 {% block title %} Accueil {% endblock %} 
 {% block content %}
 <div class="jumbotron jumbotron-fluid col-12">

@@ -178,6 +178,7 @@ class Raid(models.Model):
         BARADIN = "BARADIN", _("Baradin Hold")
         BASTION = "BASTION", _("Bastion of Twilight")
         THRONE = "THRONE", _("Throne of the Four Winds")
+        BLACKWING = "BLACKWING", _("Blackwing Descent")
         FIRELAND = "FIRELAND", _("Firelands")
         DRAGON = "DRAGON", _("Dragon Soul")
         AUTRE = "AUTRE", _("Autre")
@@ -193,6 +194,7 @@ class Raid(models.Model):
     participants = models.ManyToManyField(Character, verbose_name='Participants', related_name='participant')
     warcraftLogs = models.URLField(blank=True, null=True, max_length=200, verbose_name='URL Warcraft Logs')
     commentaire = models.CharField(blank=True, null=True, max_length=200, verbose_name='Commentaire')
+    isClosed = models.BooleanField(default=False, verbose_name='Terminé')
 
     def __str__(self): 
          return self.instance + " " + str(self.played_at)

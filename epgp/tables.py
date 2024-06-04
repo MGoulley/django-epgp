@@ -50,11 +50,18 @@ class EPGPLogEntryTable(tables.Table):
         fields = ("id", "updated_at", "created_at", "target_player", "raid", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta", "user_id", "canceled", "canceled_by")
         order_by = '-updated_at'
 
+class EPGPLogEntryTableLight(tables.Table):
+    wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/fr/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)
+    class Meta:
+        model = EPGPLogEntry
+        fields = ("updated_at", "target_player", "raid", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta")
+        order_by = '-updated_at'
+
 class RaidTable(tables.Table):
     edit = tables.TemplateColumn(verbose_name="Edit", template_code='<a href="{{ request.path }}/edit/{{record.id}}">Edit</a>', orderable=False)
     class Meta:
         model = Raid
-        fields = ("played_at", "instance", "participants", "warcraftLogs", "commentaire", "edit")
+        fields = ("played_at", "instance", "participants", "warcraftLogs", "commentaire", "isClosed", "edit")
         order_by = '-played_at'
     
     def before_render(self, request):

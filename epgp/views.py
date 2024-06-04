@@ -142,6 +142,7 @@ def editRaid(request, id):
             raid.instance = form.cleaned_data.get("instance")
             raid.warcraftLogs = form.cleaned_data.get("warcraftLogs")
             raid.commentaire = form.cleaned_data.get("commentaire")
+            raid.isClosed = form.cleaned_data.get("isClosed")
             raid.save()
             raid.participants.set(form.cleaned_data.get("participants"))
             return HttpResponseRedirect("/raids")
@@ -173,15 +174,45 @@ def giveRaidEPGP(request):
         form = GiveRaidForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            raid_id = form.cleaned_data.get("raid").id
-            reason = form.cleaned_data.get("reason")
-            ep_delta = form.cleaned_data.get("ep_delta")
-            characters = Raid.objects.get(id=raid_id).participants.all()
+            ep_delta = 0
+            reason = ""
+            raid = form.cleaned_data.get("raid")
+            nbHour = form.cleaned_data.get("nbHour")
+            bossKillNM = form.cleaned_data.get("bossKillNM")
+            bossKillHM = form.cleaned_data.get("bossKillHM")
+            wipe = form.cleaned_data.get("wipe")
+
+            if form.cleaned_data.get("presence") == True:
+                ep_delta = ep_delta + 30
+                reason = reason + "Present. "
+            
+            if nbHour != None:
+                if nbHour > 0 and nbHour < 10:
+                    ep_delta = ep_delta + (nbHour * 50)
+                    reason = reason + str(nbHour) + " heures de raid. "
+            
+            if bossKillNM != None:
+                if bossKillNM > 0 and bossKillNM < 20:
+                    ep_delta = ep_delta + (bossKillNM * 30)
+                    reason = reason + str(bossKillNM) + " boss tués en NM. "
+            
+            if bossKillHM != None:
+                if bossKillHM > 0 and bossKillHM < 20:
+                    ep_delta = ep_delta + (bossKillHM * 50)
+                    reason = reason + str(bossKillHM) + " boss tués en HM. "
+            
+            if wipe != None:
+                if wipe > 0 and wipe < 20:
+                    ep_delta = ep_delta + (wipe * 10)
+                    reason = reason + str(wipe) + " wipes sur des nouveaux boss. "
+    
+            characters = Raid.objects.get(id=raid.id).participants.all()
             for player_id in characters.values_list('playerId', flat=True).distinct():
                 player = Player.objects.get(id=player_id)
                 log = EPGPLogEntry(
                     target_player=player, 
-                    user_id=request.user, 
+                    user_id=request.user,
+                    raid=raid,
                     type=EPGPLogEntryType.PARTICIPATE, 
                     reason=reason, 
                     ep_delta=ep_delta, 
@@ -205,14 +236,18 @@ def giveLootEPGP(request):
             player = character.playerId
             loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
             reduction = 1.0
+            reason = "Obtient un super loot !"
             if form.cleaned_data.get("reduction_reroll") == True:
                 reduction = settings.EP_STANDBY
+                reason = "Reduction reroll " + str(reduction * 100) + "%"
             gpValue = loot.gpValue
+            
             log = EPGPLogEntry(
                 target_player=player, 
                 user_id=request.user, 
                 type=EPGPLogEntryType.LOOT,
-                reason = "Reduction reroll " + str(reduction * 100) + "%",
+                reason = reason,
+                raid=raid,
                 loot_id=loot,
                 ep_delta=0, 
                 gp_delta=int(gpValue * reduction)
@@ -336,7 +371,7 @@ def index(request):
 
         tableranking = EPGPRankTable(data)
 
-        tablelog = EPGPLogEntryTable(EPGPLogEntry.objects.all())
+        tablelog = EPGPLogEntryTableLight(EPGPLogEntry.objects.all())
 
         return render(request, 'index.html', {'tableranking':tableranking, 'tablelog':tablelog})
 
