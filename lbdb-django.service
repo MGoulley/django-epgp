@@ -3,7 +3,6 @@ Description=lbdb django runner
 After=network.target
 
 [Service]
-User=github
 WorkingDirectory=/opt/lbdb/django
 ExecStart=gunicorn --bind 0.0.0.0:8000 djangoepgp.wsgi
 
