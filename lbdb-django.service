@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=github
 WorkingDirectory=/opt/lbdb/django
-ExecStart=/opt/lbdb/django/start.sh
+ExecStart=gunicorn --bind 0.0.0.0:8000 djangoepgp.wsgi
 
 [Install]
 WantedBy=default.target
