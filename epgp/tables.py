@@ -54,8 +54,8 @@ class EPGPLogEntryTableLight(tables.Table):
     wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/fr/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)
     class Meta:
         model = EPGPLogEntry
-        fields = ("updated_at", "target_player", "raid", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta")
-        order_by = '-updated_at'
+        fields = ("created_at", "target_player", "raid", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta")
+        order_by = '-created_at'
 
 class RaidTable(tables.Table):
     edit = tables.TemplateColumn(verbose_name="Edit", template_code='<a href="{{ request.path }}/edit/{{record.id}}">Edit</a>', orderable=False)
