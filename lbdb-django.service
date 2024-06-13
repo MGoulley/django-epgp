@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/opt/lbdb/django
-ExecStart=gunicorn --bind 0.0.0.0:8000 djangoepgp.wsgi
+ExecStart=/opt/lbdb/django/venv/bin/gunicorn --bind 0.0.0.0:8000 djangoepgp.wsgi
 
 [Install]
 WantedBy=default.target

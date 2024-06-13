@@ -30,7 +30,7 @@ class PlayerListView(SingleTableView):
     table_class = PlayerTable
     template_name = 'player/index.html'
     def get_table_data(self):
-        return Player.objects.values('name', 'discordTag', 'isOfficier')
+        return Player.objects.values('name', 'discordTag', 'isOfficier', 'isPU')
     
 class LootListView(SingleTableMixin, FilterView):
     model = Loot
@@ -75,7 +75,8 @@ def addPlayer(request):
             player = Player(
                 name=form.cleaned_data.get("name"), 
                 discordTag=form.cleaned_data.get("discordTag"),
-                isOfficier=form.cleaned_data.get("isOfficier")
+                isOfficier=form.cleaned_data.get("isOfficier"),
+                isPU=form.cleaned_data.get("isPU")
             )
             player.save()
             log = EPGPLogEntry(

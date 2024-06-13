@@ -11,6 +11,7 @@ class Player(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, verbose_name='Joueur')
     discordTag = models.CharField(max_length=40, unique=True, verbose_name='Tag discord')
+    isPU = models.BooleanField(default=False, verbose_name='Pick Up')
     isOfficier = models.BooleanField(default=False, verbose_name='Officier')
 
     objects = models.Manager()

@@ -11,6 +11,7 @@ class PlayerForm(forms.Form):
     name = forms.CharField(label="Nom du joueur")
     discordTag = forms.CharField(label="Tag discord")
     isOfficier = forms.BooleanField(label="Est un officier", required=False, initial=False,)
+    isPU = forms.BooleanField(label="Est un Pick Up", required=False, initial=False,)
 
     def __init__(self, *args, **kwargs):
         super(PlayerForm, self).__init__(*args, **kwargs)

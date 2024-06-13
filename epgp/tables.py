@@ -4,7 +4,7 @@ from .models import *
 class PlayerTable(tables.Table):
     class Meta:
         model = Player
-        fields = ("name", "discordTag", "isOfficier")
+        fields = ("name", "discordTag", "isOfficier", "isPU")
     
     def before_render(self, request):
         if not request.user.is_authenticated:
