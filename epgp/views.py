@@ -279,7 +279,7 @@ def sessionLootEPGP(request):
 
 def sessionLootRaidEPGP(request, id):
     if request.method == "POST":
-        form = GiveRaidLootForm(request.POST)
+        form = GiveRaidLootForm(id, request.POST)
         if form.is_valid():
             raid = Raid.objects.get(id=id)
             characters = form.cleaned_data.get("characters").select_related().values('playerId', 'name', 'id')
@@ -312,9 +312,10 @@ def sessionLootRaidEPGP(request, id):
             )
             log.save()
             dfPrintResult = dfResult[["name", "total_ep", "total_gp", "ratio"]]
+            form = GiveRaidLootForm(id)
             return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id, "saved": "yes", "modalTitle": str(character) + " remporte le loot !", "modalContent": dfPrintResult.to_html(index=False)})
     else:
-        form = GiveRaidLootForm()
+        form = GiveRaidLootForm(id)
 
     return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id})
 
