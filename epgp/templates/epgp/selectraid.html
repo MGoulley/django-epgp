@@ -1,0 +1,36 @@
+{% extends "layouts/base-site.html" %}
+{% load render_table from django_tables2 %}
+
+{% block title %} EPGP {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="fade-in">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <form method="POST" class="post-form" action="sessionloot">
+            <div class="card-header"><strong>Sélectionner le raid</strong></div>
+            <div class="card-body">    
+                {% csrf_token %}
+                {{ form }}
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-primary" type="submit"> Valider</button>
+              <button class="btn btn-sm btn-danger" type="reset"> Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- /.col-->
+    </div>
+    <!-- /.row-->
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script type="text/javascript" src="http://dal-yourlabs.rhcloud.com/static/collected/admin/js/vendor/jquery/jquery.js"></script>
+{{ frm.media }}
+{% endblock javascripts %}

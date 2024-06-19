@@ -5,6 +5,8 @@ from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.template import loader
 
+import pandas as pd
+
 from django.conf import settings
 
 from .filters import *
@@ -239,8 +241,11 @@ def giveLootEPGP(request):
             reduction = 1.0
             reason = "Obtient un super loot !"
             if form.cleaned_data.get("reduction_reroll") == True:
-                reduction = settings.EP_STANDBY
-                reason = "Reduction reroll " + str(reduction * 100) + "%"
+                reduction = settings.REDUCTION_REROLL
+                reason = "Obtient un super loot pour son reroll (Réduction de " + str(int(reduction * 100)) + "%)."
+            if form.cleaned_data.get("reduction_spe2") == True:
+                reduction = settings.REDUCTION_SPE2
+                reason = "Obtient un super loot pour sa spé secondaire (Réduction de " + str(int(reduction * 100)) + "%)."
             gpValue = loot.gpValue
             
             log = EPGPLogEntry(
@@ -259,6 +264,59 @@ def giveLootEPGP(request):
         form = GiveLootForm()
 
     return render(request, "epgp/giveloot.html", {"form": form})
+
+def sessionLootEPGP(request):
+    if request.method == "POST":
+        form = SelectRaidForm(request.POST)
+        if form.is_valid():
+            raid = form.cleaned_data.get("raid")
+            return HttpResponseRedirect("/epgp/sessionloot/" + str(raid.id))
+    else:
+        # TODO: Retourner directement vers session loot raid si seulement un raid actif
+        form = SelectRaidForm()
+
+    return render(request, "epgp/selectraid.html", {"form": form})
+
+def sessionLootRaidEPGP(request, id):
+    if request.method == "POST":
+        form = GiveRaidLootForm(request.POST)
+        if form.is_valid():
+            raid = Raid.objects.get(id=id)
+            characters = form.cleaned_data.get("characters").select_related().values('playerId', 'name', 'id')
+            dfCharacters = pd.DataFrame.from_records(characters).rename(columns={"playerId": "id", "id": "characterId"})
+            dfEPGP = pd.DataFrame.from_records(EPGPLogEntry.objects.getRankPerCharacter()).rename(columns={"target_player__id": "id", "rank": "ratio"})
+            dfResult = dfCharacters.merge(dfEPGP, on='id', how='left').sort_values(by='ratio', ascending=False)
+            print(dfResult)
+            character = dfResult['name'].iloc[0]
+            player = Player.objects.get(id=dfResult['id'].iloc[0])
+            loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
+            reduction = 1.0
+            reason = "Obtient un super loot !"
+            if form.cleaned_data.get("reduction_reroll") == True:
+                reduction = settings.REDUCTION_REROLL
+                reason = "Obtient un super loot pour son reroll (Réduction de " + str(int(reduction * 100)) + "%)."
+            if form.cleaned_data.get("reduction_spe2") == True:
+                reduction = settings.REDUCTION_SPE2
+                reason = "Obtient un super loot pour sa spé secondaire (Réduction de " + str(int(reduction * 100)) + "%)."
+            gpValue = loot.gpValue
+            
+            log = EPGPLogEntry(
+                target_player=player, 
+                user_id=request.user, 
+                type=EPGPLogEntryType.LOOT,
+                reason = reason,
+                raid=raid,
+                loot_id=loot,
+                ep_delta=0, 
+                gp_delta=int(gpValue * reduction)
+            )
+            log.save()
+            dfPrintResult = dfResult[["name", "total_ep", "total_gp", "ratio"]]
+            return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id, "saved": "yes", "modalTitle": str(character) + " remporte le loot !", "modalContent": dfPrintResult.to_html(index=False)})
+    else:
+        form = GiveRaidLootForm()
+
+    return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id})
 
 def applyDecay(request):
     if request.method == "POST":

@@ -228,7 +228,12 @@ class CustomEPGPLogEntryQuerySet(models.QuerySet):
 
     def getRankPerCharacter(self):
         # TODO: Select EPGP par personnage
-        return self.select_related("target_player")
+        return self.values("target_player__id").annotate(
+                total_ep=Sum('ep_delta'), 
+                total_gp=Sum('gp_delta')
+            ).annotate(
+                rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField()), 3), Cast(F('total_ep'), FloatField()))
+            ).order_by("-rank")
 
 class EPGPLogEntry(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='ID')

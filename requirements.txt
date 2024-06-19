@@ -5,3 +5,4 @@ django-filter
 django-bootstrap5==24.2
 gunicorn
 django-autocomplete-light
+pandas

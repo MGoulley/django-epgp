@@ -116,3 +116,28 @@ class GiveLootForm(forms.Form):
         super(GiveLootForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+class SelectRaidForm(forms.Form):
+    raid = forms.ModelChoiceField(label="Raid", queryset=Raid.objects.filter(isClosed=False).order_by("-played_at"), initial=0)
+    
+    def __init__(self, *args, **kwargs):
+        super(SelectRaidForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+class GiveRaidLootForm(forms.Form):
+    characters = forms.ModelMultipleChoiceField(
+        label="Nom des personnages qui veulent l'item",
+        queryset=Raid.objects.filter(isClosed=False).order_by("-played_at").first().participants.order_by("name"),
+        widget=CustomCheckboxSelectMultiple()
+    )
+    loot_id = forms.IntegerField(label="Identifiant de l'item", validators=[validate_loot_exists])
+    reduction_spe2 = forms.BooleanField(label="Reduction spé 2", required=False, initial=False)
+    reduction_reroll = forms.BooleanField(label="Reduction reroll", required=False, initial=False)
+
+    error_css_class = 'alert alert-warning'
+    
+    def __init__(self, *args, **kwargs):
+        super(GiveRaidLootForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
