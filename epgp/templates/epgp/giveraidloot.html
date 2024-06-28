@@ -1,6 +1,12 @@
 {% extends "layouts/base-site.html" %}
 {% load render_table from django_tables2 %}
 
+{% block stylesheets %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+<link href="/static/assets/css/wow/classes-styles.css" rel="stylesheet"></script>
+{% endblock stylesheets %}
+
 {% block title %} EPGP {% endblock %}
 
 {% block content %}
@@ -8,11 +14,11 @@
 <div class="container-fluid">
   <div class="fade-in">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-9">
         <div class="card">
           <form method="POST" class="post-form" action="{{ raidid }}">
             <div class="card-header"><strong>Attribuer un item</strong></div>
-            <div class="card-body">    
+            <div class="card-body">
                 {% csrf_token %}
                 {{ form }}
             </div>
@@ -21,6 +27,14 @@
               <button class="btn btn-sm btn-danger" type="reset"> Reset</button>
             </div>
           </form>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="card">
+          <div class="card-header"><strong>Item attribué: <a id="wowheadlink" href="https://www.wowhead.com/cata/fr/item=">WowHead</a></strong></div>
+          <div class="card-body">    
+            <h4>Work In Progress...</h4>
+          </div>
         </div>
       </div>
       <!-- /.col-->
@@ -37,6 +51,14 @@
 {% endblock content %}
 
 {% block javascripts %}
-<script type="text/javascript" src="http://dal-yourlabs.rhcloud.com/static/collected/admin/js/vendor/jquery/jquery.js"></script>
+<script type="text/javascript">
+  function changeWowHeadLink() {
+    console.log(document.getElementById("id_loot_id").value);
+    var value = document.getElementById("id_loot_id").value;
+    document.getElementById("wowheadlink").href = "https://www.wowhead.com/cata/fr/item=" + value;
+    const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};
+    WH.Tooltips.refreshLinks()
+  }
+</script>
 {{ frm.media }}
 {% endblock javascripts %}

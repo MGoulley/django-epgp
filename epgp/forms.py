@@ -67,7 +67,17 @@ class CharacterForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
-        template_name = 'forms/widgets/custom.html'
+    template_name = 'forms/widgets/custom.html'
+    characters=dict ((o['id'], o) for o in Character.objects.all().select_related().values('playerId', 'name', 'id', 'classe'))
+
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        ctx = super().create_option(name, value, label, selected, index, subindex=subindex, attrs=attrs)
+        ctx['color'] = self.characters[value]["classe"].lower()
+        return ctx
+    
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        return context
 
 class RaidForm(forms.ModelForm):
     played_at = forms.DateField(label="Débuté le", initial=datetime.now)
@@ -103,20 +113,6 @@ class GiveRaidForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-class GiveLootForm(forms.Form):
-    raid = forms.ModelChoiceField(label="Raid", queryset=Raid.objects.filter(isClosed=False).order_by("-played_at"), initial=0)
-    character = forms.ModelChoiceField(label="Nom du personnage qui recoit un item", queryset=Character.objects.all())
-    loot_id = forms.IntegerField(label="Identifiant de l'item", validators=[validate_loot_exists])
-    reduction_spe2 = forms.BooleanField(label="Reduction spé 2", required=False, initial=False)
-    reduction_reroll = forms.BooleanField(label="Reduction reroll", required=False, initial=False)
-
-    error_css_class = 'alert alert-warning'
-    
-    def __init__(self, *args, **kwargs):
-        super(GiveLootForm, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-
 class SelectRaidForm(forms.Form):
     raid = forms.ModelChoiceField(label="Raid", queryset=Raid.objects.filter(isClosed=False).order_by("-played_at"), initial=0)
     
@@ -139,5 +135,8 @@ class GiveRaidLootForm(forms.Form):
             queryset=Raid.objects.get(id=idRaid).participants.order_by("name"),
             widget=CustomCheckboxSelectMultiple()
         )
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+        self.fields['loot_id'].widget.attrs['oninput'] = "changeWowHeadLink();"
+        self.fields['loot_id'].widget.attrs['oninput'] = "changeWowHeadLink();"
+        self.fields['loot_id'].widget.attrs['class'] = "form-control"
+        self.fields['reduction_spe2'].widget.attrs['class'] = "col-lg-6"
+        self.fields['reduction_reroll'].widget.attrs['class'] = "col-lg-6"

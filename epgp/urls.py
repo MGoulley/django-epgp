@@ -21,7 +21,6 @@ urlpatterns = [
     path("epgp", login_required(EPGPLogEntryListView.as_view())),
     path("epgp/ranking", login_required(views.EPGPPlayerRanking), name="ranking"),
     path("epgp/giveraid", login_required(views.giveRaidEPGP), name="giveraid"),
-    path("epgp/giveloot", login_required(views.giveLootEPGP), name="giveloot"),
     path("epgp/sessionloot", login_required(views.sessionLootEPGP), name="sessionloot"),
     path("epgp/sessionloot/<int:id>", login_required(views.sessionLootRaidEPGP), name="sessionlootraid"),
     path("epgp/decay", login_required(views.applyDecay), name="decay"),

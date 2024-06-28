@@ -230,41 +230,6 @@ def giveRaidEPGP(request):
 
     return render(request, "epgp/giveraid.html", {"form": form})
 
-def giveLootEPGP(request):
-    if request.method == "POST":
-        form = GiveLootForm(request.POST)
-        if form.is_valid():
-            raid = form.cleaned_data.get("raid")
-            character = form.cleaned_data.get("character")
-            player = character.playerId
-            loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
-            reduction = 1.0
-            reason = "Obtient un super loot !"
-            if form.cleaned_data.get("reduction_reroll") == True:
-                reduction = settings.REDUCTION_REROLL
-                reason = "Obtient un super loot pour son reroll (Réduction de " + str(int(reduction * 100)) + "%)."
-            if form.cleaned_data.get("reduction_spe2") == True:
-                reduction = settings.REDUCTION_SPE2
-                reason = "Obtient un super loot pour sa spé secondaire (Réduction de " + str(int(reduction * 100)) + "%)."
-            gpValue = loot.gpValue
-            
-            log = EPGPLogEntry(
-                target_player=player, 
-                user_id=request.user, 
-                type=EPGPLogEntryType.LOOT,
-                reason = reason,
-                raid=raid,
-                loot_id=loot,
-                ep_delta=0, 
-                gp_delta=int(gpValue * reduction)
-            )
-            log.save()
-            return HttpResponseRedirect("/epgp")
-    else:
-        form = GiveLootForm()
-
-    return render(request, "epgp/giveloot.html", {"form": form})
-
 def sessionLootEPGP(request):
     if request.method == "POST":
         form = SelectRaidForm(request.POST)
@@ -278,6 +243,7 @@ def sessionLootEPGP(request):
     return render(request, "epgp/selectraid.html", {"form": form})
 
 def sessionLootRaidEPGP(request, id):
+    # Voir si c'est pas playerId
     if request.method == "POST":
         form = GiveRaidLootForm(id, request.POST)
         if form.is_valid():
@@ -286,7 +252,6 @@ def sessionLootRaidEPGP(request, id):
             dfCharacters = pd.DataFrame.from_records(characters).rename(columns={"playerId": "id", "id": "characterId"})
             dfEPGP = pd.DataFrame.from_records(EPGPLogEntry.objects.getRankPerCharacter()).rename(columns={"target_player__id": "id", "rank": "ratio"})
             dfResult = dfCharacters.merge(dfEPGP, on='id', how='left').sort_values(by='ratio', ascending=False)
-            print(dfResult)
             character = dfResult['name'].iloc[0]
             player = Player.objects.get(id=dfResult['id'].iloc[0])
             loot = Loot.objects.get(inGameId=form.cleaned_data.get("loot_id"))
