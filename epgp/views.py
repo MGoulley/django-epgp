@@ -27,6 +27,27 @@ def pages(request):
         template = loader.get_template( 'pages/error-404.html' )
         return HttpResponse(template.render(context, request))
 
+def history(request):
+    tablelog = EPGPLogEntryTableLight(EPGPLogEntry.objects.all())
+    tablelog.paginate(page=request.GET.get("page", 1), per_page=25)
+
+    return render(request, 'history.html', {'tablelog':tablelog})
+
+def ranking(request):
+    data = []
+    objects = EPGPLogEntry.objects.getRankPerPlayer()
+    for object in objects:
+        data.append(object)
+
+    tableranking = EPGPRankTable(data)
+    return render(request, 'ranking.html', {'tableranking': tableranking})
+
+def progress(request):
+    return render(request, 'progress.html', {})
+
+def rules(request):
+    return render(request, 'rules.html', {})
+
 class PlayerListView(SingleTableView):
     model = Player
     table_class = PlayerTable
@@ -402,16 +423,7 @@ def index(request):
     if request.user.is_authenticated:
         return render(request, "index-auth.html")
     else:
-        data = []
-        objects = EPGPLogEntry.objects.getRankPerPlayer()
-        for object in objects:
-            data.append(object)
-
-        tableranking = EPGPRankTable(data)
-
-        tablelog = EPGPLogEntryTableLight(EPGPLogEntry.objects.all())
-
-        return render(request, 'index.html', {'tableranking':tableranking, 'tablelog':tablelog})
+        return render(request, 'index.html', {})
 
 def player(request, name):
     return HttpResponse("GET PLAYER INFO OF " + name)

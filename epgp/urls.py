@@ -7,6 +7,10 @@ from .views import *
 urlpatterns = [
     path("", views.index, name="index"),
     path("", views.index, name="home"),
+    path("history", views.history, name="history"),
+    path("progress", views.progress, name="progress"),
+    path("ranking", views.ranking, name="ranking"),
+    path("rules", views.rules, name="rules"),
     re_path(r'^.*\.html', views.pages, name='pages'),
     path("players", login_required(PlayerListView.as_view())),
     path("player/add", login_required(views.addPlayer), name="newplayer"),

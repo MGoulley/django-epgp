@@ -39,20 +39,26 @@
     <link href="/static/assets/css/style.css" rel="stylesheet">
     <link href="/static/assets/vendors/pace-progress/css/pace.min.css" rel="stylesheet">
 
+    <!-- Custom font -->
+    <link href="https://fonts.cdnfonts.com/css/friz-quadrata-std" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/warcraft" rel="stylesheet">
+
     <!-- Specific Page CSS goes HERE  -->
     {% block stylesheets %}{% endblock stylesheets %}
 
   </head>
   <body class="c-app">
 
-    <div class="c-body">
+    <div class="c-body" style="font-family: 'Friz Quadrata Std', sans-serif;">
       <main class="c-main">
+        {% include 'includes/light/banner.html' %}
+        {% include 'includes/light/nav.html' %}
         {% block content %}{% endblock content %}
       </main>
     </div>
-    {% block footer %}{% endblock footer %}
-
     {% include 'includes/scripts.html' %}
+
+    {% include 'includes/light/footer.html' %}
 
     <!-- Specific Page JS goes HERE  -->
     {% block javascripts %}{% endblock javascripts %}

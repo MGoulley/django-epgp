@@ -1,4 +1,4 @@
-{% extends "layouts/base-site-fullscreen.html" %}
+{% extends "layouts/base-site-light.html" %}
 {% load render_table from django_tables2 %}
 {% load django_bootstrap5 %}
 {% block stylesheets %}
@@ -7,159 +7,16 @@
 {% endblock stylesheets %}
 {% block title %} Accueil {% endblock %} 
 {% block content %}
-<div class="jumbotron jumbotron-fluid col-12">
-  <div class="container">
-    <h1 class="display-4">Les Belettes de Brill</h1>
-    <p class="lead">Bienvenue chez les belettes !</p>
+<div class="card">
+  <div class="card-header"><h5 class="card-title">Nous rejoindre</h5></div>
+  <div class="card-body">
+    Rejoignez-nous sur <a href="https://discord.gg/F6mJ7EXZ">Discord</a> !
   </div>
 </div>
 <div class="card">
-  <div class="card-header"><h5 class="card-title">Le ranking des belettes</h5></div>
+  <div class="card-header"><h5 class="card-title">L'addon indispensable pour les raids</h5></div>
   <div class="card-body">
-    {% render_table tableranking %}
-  </div>
-</div>
-
-<div class="card mt-5">
-  <div class="card-header"><h5 class="card-title">Le détail</h5></div>
-  <div class="card-body">
-    {% render_table tablelog %}
-  </div>
-</div>
-
-<div class="container-fluid">
-  <div class="fade-in">
-    <div class="row">
-      <div class="col-sm-12 col-xl-6">
-        <div class="card">
-          <div class="card-header"> Points d'effort (EP)</div>
-          <div class="card-body">
-            <div class="accordion" id="accordion" role="tablist">
-              <div class="card mb-0">
-                <div class="card-header" id="heading01" role="tab">
-                  <h5 class="mb-0"><a data-toggle="collapse" href="#collapse01" aria-expanded="true" aria-controls="collapse01">Présence à l’heure en raid (30 EP)</a></h5>
-                </div>
-                <div class="collapse show" id="collapse01" role="tabpanel" aria-labelledby="heading01" data-parent="#accordion">
-                  <div class="card-body">Les personnes présentes à l'heure en raid sont récompensées.</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading02" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse02" aria-expanded="false" aria-controls="collapse02">Heure de raid (50 EP)</a></h5>
-                </div>
-                <div class="collapse" id="collapse02" role="tabpanel" aria-labelledby="heading02" data-parent="#accordion">
-                  <div class="card-body">Plus vous passez de temps en raid plus vous êtes récompensés. Chaque heure commencée est récompensée!</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading03" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse03" aria-expanded="false" aria-controls="collapse03">Tuer un Boss (NM 30 EP, HM 50 EP)</a></h5>
-                </div>
-                <div class="collapse" id="collapse03" role="tabpanel" aria-labelledby="heading03" data-parent="#accordion">
-                  <div class="card-body">Lorsque vous participez à tuer un boss lors d'un raid, vous êtes récompensés.</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading04" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse04" aria-expanded="false" aria-controls="collapse04">Wipe sur un nouveau Boss (10 EP)</a></h5>
-                </div>
-                <div class="collapse" id="collapse04" role="tabpanel" aria-labelledby="heading04" data-parent="#accordion">
-                  <div class="card-body">Lorsque vous participez à un raid qui essaye de tomber pour la première fois un boss (10 ou 25, nm ou hm), vous êtes récompensés. La récompense n'est valable qu'une seule fois pour l'ensemble de la guilde.</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading05" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse05" aria-expanded="false" aria-controls="collapse05">Venir en raid sur un reroll à la demande du RL (20 EP)</a></h5>
-                </div>
-                <div class="collapse" id="collapse05" role="tabpanel" aria-labelledby="heading05" data-parent="#accordion">
-                  <div class="card-body">Si vous venez sur un de vos reroll <b>lorsque le RL vous le demande</b>, et que vous acceptez. Cela ne fonctionne pas lorsque c'est vous qui demandez/imposez de prendre votre reroll.</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading06" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse06" aria-expanded="false" aria-controls="collapse06">Dépot dans la banque de guilde</a></h5>
-                </div>
-                <div class="collapse" id="collapse06" role="tabpanel" aria-labelledby="heading06" data-parent="#accordion">
-                  <div class="card-body">Avec le système EPGP nous allons récompenser les joueurs qui participent à l'effort de guerre du terrier.
-                    Cela va se faire avec certaines règles, à la fois pour récompenser les personnes qui s'investiront pour aider les autres, mais aussi pour ne pas trop privilégier les personnes qui ont la chance d'avoir un temps de jeu plus important que les autres, et qui ont donc plus de facilités à pouvoir collecter des ressources.
-                    Bien évidemment vous pouvez toujours déposer les items que vous souhaitez en banque de guilde, à votre bon coeur ! <br/>
-                    Comment cela va se passer ?<br/>
-                    Chaque mercredi, un message sera posté précisant les ressources qui rapporteront des points d'effort (EP). Il pourra y avoir une ou plusieurs ressources proposées par semaine. Chaque ressource aura un nombre de EP (par item ou par stack) qui lui sera attribué.  
-                  </div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading07" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse07" aria-expanded="false" aria-controls="collapse07">Event hors raid officiel</a></h5>
-                </div>
-                <div class="collapse" id="collapse07" role="tabpanel" aria-labelledby="heading07" data-parent="#accordion">
-                  <div class="card-body">Tout joueur peut proposer aux officiers un évènement pouvant rapporter des points d'efforts. En fonction de la difficulté ou du prestige de l'évènement proposé, les officiers pourront attribuer des point d'efforts pour les personnes qui participeront à l'évènement.</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading08" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse08" aria-expanded="false" aria-controls="collapse08">Participer activement à un haut fait de guilde</a></h5>
-                </div>
-                <div class="collapse" id="collapse08" role="tabpanel" aria-labelledby="heading08" data-parent="#accordion">
-                  <div class="card-body">On va proposer plusieurs évènements pour obtenir des hauts faits de guilde. Des points d'EP seront donnés aux personnes qui auront participé activement à l'accomplissement du HF.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-xl-6">
-        <div class="card">
-          <div class="card-header"> Points d'équipement (GP)</div>
-          <div class="card-body">
-            <div class="accordion" id="accordion" role="tablist">
-              <div class="card mb-0">
-                <div class="card-header" id="heading11" role="tab">
-                  <h5 class="mb-0"><a data-toggle="collapse" href="#collapse11" aria-expanded="true" aria-controls="collapse11">Attribution d'un item en +1</a></h5>
-                </div>
-                <div class="collapse show" id="collapse11" role="tabpanel" aria-labelledby="heading11" data-parent="#accordion">
-                  <div class="card-body">Pour calculer le cout en GP d'un item, multiplier l'ilvl d'un item et multiplier par le coefficient de slot suivant:
-                    Tête, torse, pantalon, arme 2 mains : 1
-                    Épaule, main, ceinture, pieds, trinket: 0,7
-                    Brassard, cou, cape, anneau, bouclier, off hand: 0,5
-                    Arme une main, arme distance, baguette: 0,4
-                    Token ou assimilé: 1
-                  </div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading12" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse12" aria-expanded="false" aria-controls="collapse12">Attribution d'un item en +2</a></h5>
-                </div>
-                <div class="collapse" id="collapse12" role="tabpanel" aria-labelledby="heading12" data-parent="#accordion">
-                  <div class="card-body">Le coup est GP est nul, sauf pour les tokens. L'attribution se fait au rand et par répartition équitable (si une personne a déja eu un +2, alors on donne à l'autre personne).</div>
-                </div>
-              </div>
-              <div class="card mb-0">
-                <div class="card-header" id="heading13" role="tab">
-                  <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapse13" aria-expanded="false" aria-controls="collapse13">Attribution d'un item à un reroll</a></h5>
-                </div>
-                <div class="collapse" id="collapse13" role="tabpanel" aria-labelledby="heading13" data-parent="#accordion">
-                  <div class="card-body">Les rerolls bénéficient d'une réduction en GP de lorsqu'ils viennent à la demande du RL.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    Un Addon indispensable pour aider à la distribution du loot: <a href="https://www.curseforge.com/wow/addons/rclootcouncil-classic">RC Loot Council Classic</a>
   </div>
 </div>
 {% endblock content %}
-
-{% block footer %}
-<footer class="c-footer">
-  <div>
-      Les Belettes de Brill
-  </div>
-  <div class="ml-auto">
-    <button class="btn btn-secondary" type="button" onclick="location.href='login'" >Login</button>
-    <p>&copy;LBDB</p>
-  </div>
-</footer>
-{% endblock footer %}
