@@ -140,3 +140,13 @@ class GiveRaidLootForm(forms.Form):
         self.fields['loot_id'].widget.attrs['class'] = "form-control"
         self.fields['reduction_spe2'].widget.attrs['class'] = "col-lg-6"
         self.fields['reduction_reroll'].widget.attrs['class'] = "col-lg-6"
+
+class ReattributeForm(forms.ModelForm):
+    class Meta:
+        model = EPGPLogEntry
+        fields = ['target_player']
+
+    def __init__(self, *args, **kwargs):
+        super(ReattributeForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

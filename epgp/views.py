@@ -243,7 +243,6 @@ def sessionLootEPGP(request):
     return render(request, "epgp/selectraid.html", {"form": form})
 
 def sessionLootRaidEPGP(request, id):
-    # Voir si c'est pas playerId
     if request.method == "POST":
         form = GiveRaidLootForm(id, request.POST)
         if form.is_valid():
@@ -384,6 +383,20 @@ def standby(request):
         form = StandbyForm()
 
     return render(request, "epgp/standby.html", {"form": form})
+
+def reattribute(request, id):
+    logEntry =  EPGPLogEntry.objects.get(id=id)
+    if request.method == "POST":
+        form = ReattributeForm(request.POST)
+        if form.is_valid():
+            playerId=form.cleaned_data.get("target_player").id
+            logEntry.target_player = Player.objects.get(pk=playerId)
+            logEntry.save()     
+            return HttpResponseRedirect("/epgp")
+    else:
+        form = ReattributeForm(instance=logEntry)
+
+    return render(request, "epgp/reattribute.html", {"form": form, "itemid": logEntry.loot_id.inGameId})
 
 def index(request):
     if request.user.is_authenticated:

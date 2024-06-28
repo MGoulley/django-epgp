@@ -45,10 +45,15 @@ class LootTable(tables.Table):
 
 class EPGPLogEntryTable(tables.Table):
     wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/fr/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)
+    reattribute = tables.TemplateColumn(verbose_name="Réattribuer", template_code='<a href="{{ request.path }}/reattribute/{{record.id}}">Réattribuer</a>', orderable=False)
     class Meta:
         model = EPGPLogEntry
-        fields = ("id", "updated_at", "created_at", "target_player", "raid", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta", "user_id", "canceled", "canceled_by")
+        fields = ("id", "updated_at", "created_at", "target_player", "raid", "type", "reason", "wowHeadUrl", "ep_delta", "gp_delta", "user_id", "canceled", "canceled_by", "reattribute")
         order_by = '-updated_at'
+
+    def before_render(self, request):
+        if not request.user.is_authenticated:
+            self.columns.hide('reattribute')
 
 class EPGPLogEntryTableLight(tables.Table):
     wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/fr/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)

@@ -27,4 +27,5 @@ urlpatterns = [
     path("epgp/dock", login_required(views.applyDock), name="dock"),
     path("epgp/giveep", login_required(views.giveep), name="giveep"),
     path("epgp/standby", login_required(views.standby), name="standby"),
+    path("epgp/reattribute/<int:id>", login_required(views.reattribute), name="reattribute"),
 ]

@@ -1,5 +1,9 @@
 {% extends "layouts/base-site.html" %}
-{% load render_table from django_tables2 %}
+
+{% block stylesheets %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+{% endblock stylesheets %}
 
 {% block title %} EPGP {% endblock %}
 
@@ -10,8 +14,8 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
-          <form method="POST" class="post-form" action="giveloot">
-            <div class="card-header"><strong>Donner un item à un joueur</strong> <small>Form</small></div>
+          <form method="POST" class="post-form" action="">
+            <div class="card-header"><strong>Réattribuer l'item <a id="wowheadlink" href="https://www.wowhead.com/cata/fr/item={{ itemid }}">WowHead</a> à un autre joueur</strong></div>
             <div class="card-body">    
                 {% csrf_token %}
                 {{ form }}
