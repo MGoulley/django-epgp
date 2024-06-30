@@ -10,7 +10,7 @@
         <div class="card">
             <div class="card-header"><i class="fa fa-align-justify"></i><h2>Liste des Joueurs</h2>
                 {% if user.is_authenticated %}
-                <button onclick="location.href='/player/add'" class="btn btn-outline-success float-right btn-lg" type="button">Ajouter un joueur</button>
+                <button onclick="location.href='{% url 'newplayer'  %}'" class="btn btn-outline-success float-right btn-lg" type="button">Ajouter un joueur</button>
                 {% endif %}
             </div>
             <div class="card-body">

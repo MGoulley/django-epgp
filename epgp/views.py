@@ -4,6 +4,7 @@ from django_tables2 import SingleTableView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.template import loader
+from django.urls import reverse
 
 import pandas as pd
 
@@ -41,6 +42,15 @@ def ranking(request):
 
     tableranking = EPGPRankTable(data)
     return render(request, 'ranking.html', {'tableranking': tableranking})
+
+class LootListViewLight(SingleTableMixin, FilterView):
+    model = Loot
+    table_class = LootTable
+    template_name = 'loot/index.html'
+    filterset_class = LootFilter
+    
+    def get_queryset(self):
+        return Loot.objects.filter(ilvl__lte = 430)
 
 def progress(request):
     return render(request, 'progress.html', {})
@@ -111,7 +121,7 @@ def addPlayer(request):
                 gp_delta=0
             )
             log.save()
-            return HttpResponseRedirect("/players")
+            return HttpResponseRedirect(reverse('players'))
     else:
         form = PlayerForm()
 
@@ -130,7 +140,7 @@ def editCharacter(request, id):
             character.specMain = form.cleaned_data.get("specMain")
             character.specAlt = form.cleaned_data.get("specAlt")
             character.save()
-            return HttpResponseRedirect("/characters")
+            return HttpResponseRedirect(reverse('characters'))
     else:  
         form = CharacterForm(instance=character)
 
@@ -151,7 +161,7 @@ def addCharacter(request):
                 specAlt=form.cleaned_data.get("specAlt")
             )
             character.save()
-            return HttpResponseRedirect("/characters")
+            return HttpResponseRedirect(reverse('characters'))
     else:
         form = CharacterForm()
 
@@ -169,7 +179,7 @@ def editRaid(request, id):
             raid.isClosed = form.cleaned_data.get("isClosed")
             raid.save()
             raid.participants.set(form.cleaned_data.get("participants"))
-            return HttpResponseRedirect("/raids")
+            return HttpResponseRedirect(reverse('raids'))
     else:  
         form = RaidForm(instance=raid)
 
@@ -185,7 +195,7 @@ def addRaid(request):
                 commentaire=form.cleaned_data.get("commentaire")
             )
             raid.participants.set(form.cleaned_data.get("participants"))
-            return HttpResponseRedirect("/raids")
+            return HttpResponseRedirect(reverse('raids'))
     else:
         form = RaidForm()
 
@@ -243,7 +253,7 @@ def giveRaidEPGP(request):
                     gp_delta=0
                 )
                 log.save()
-            return HttpResponseRedirect("/epgp")
+            return HttpResponseRedirect(reverse('epgp'))
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -256,7 +266,7 @@ def sessionLootEPGP(request):
         form = SelectRaidForm(request.POST)
         if form.is_valid():
             raid = form.cleaned_data.get("raid")
-            return HttpResponseRedirect("/epgp/sessionloot/" + str(raid.id))
+            return HttpResponseRedirect(reverse('sessionlootraid', args=[raid.id]))
     else:
         # TODO: Retourner directement vers session loot raid si seulement un raid actif
         form = SelectRaidForm()
@@ -321,7 +331,7 @@ def applyDecay(request):
                 )
                 log.save()
                 
-            return HttpResponseRedirect("/epgp")
+            return HttpResponseRedirect(reverse('epgp'))
     else:
         form = DecayForm()
 
@@ -357,7 +367,7 @@ def applyDock(request):
                     )
                     log.save()
                 
-            return HttpResponseRedirect("/epgp")
+            return HttpResponseRedirect(reverse('epgp'))
     else:
         form = DockForm()
 
@@ -377,7 +387,7 @@ def giveep(request):
             )
             log.save()
             
-            return HttpResponseRedirect("/epgp")
+            return HttpResponseRedirect(reverse('epgp'))
     else:
         form = GiveEPForm()
 
@@ -399,7 +409,7 @@ def standby(request):
             )
             log.save()
             
-            return HttpResponseRedirect("/epgp")
+            return HttpResponseRedirect(reverse('epgp'))
     else:
         form = StandbyForm()
 
@@ -413,17 +423,17 @@ def reattribute(request, id):
             playerId=form.cleaned_data.get("target_player").id
             logEntry.target_player = Player.objects.get(pk=playerId)
             logEntry.save()     
-            return HttpResponseRedirect("/epgp")
+            return HttpResponseRedirect(reverse('epgp'))
     else:
         form = ReattributeForm(instance=logEntry)
 
     return render(request, "epgp/reattribute.html", {"form": form, "itemid": logEntry.loot_id.inGameId})
 
+def indexAdmin(request):
+    return render(request, "index-auth.html")
+
 def index(request):
-    if request.user.is_authenticated:
-        return render(request, "index-auth.html")
-    else:
-        return render(request, 'index.html', {})
+    return render(request, 'index.html', {})
 
 def player(request, name):
     return HttpResponse("GET PLAYER INFO OF " + name)

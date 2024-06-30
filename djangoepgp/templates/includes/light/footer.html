@@ -3,7 +3,11 @@
         Les Belettes de Brill
     </div>
     <div class="ml-auto">
-        <button class="btn btn-secondary" type="button" onclick="location.href='login'" >Login</button>
+        {% if user.is_authenticated %}
+            <button class="btn btn-primary" type="button" onclick="location.href='{% url 'indexadmin'  %}'" >Admin</button>
+        {% else %}
+            <button class="btn btn-secondary" type="button" onclick="location.href='{% url 'login'  %}'" >Login</button>
+        {% endif %}
         <p>&copy;LBDB</p>
     </div>
 </footer>

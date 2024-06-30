@@ -1,7 +1,8 @@
 <ul class="nav justify-content-center nav-tabs nav-fill">
-    <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
-    <li class="nav-item"><a class="nav-link" href="progress">Progress</a></li>
-    <li class="nav-item"><a class="nav-link" href="ranking">EPGP Ranking</a></li>
-    <li class="nav-item"><a class="nav-link" href="history">EPGP History</a></li>
-    <li class="nav-item"><a class="nav-link" href="rules">Règlement EPGP</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'home'  %}">Accueil</a></li>
+    <!-- TODO <li class="nav-item"><a class="nav-link" href="progress">Progress</a></li> -->
+    <li class="nav-item"><a class="nav-link" href="{% url 'rankingLight'  %}">Rangs EPGP</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'history'  %}">Historique EPGP</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'lootsLight'  %}">Equipements</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'rules'  %}">Règlement EPGP</a></li>
   </ul>

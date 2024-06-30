@@ -4,69 +4,67 @@
     <h2>Les Belettes de Brill</h2>
   </div>
   <ul class="c-sidebar-nav">
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'indexadmin'  %}">
       <svg class="c-sidebar-nav-icon">
-        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-chart-line"></use>
+      </svg> Supervision</a></li>
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'home'  %}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-external-link"></use>
       </svg> Accueil</a></li>
     <li class="c-sidebar-nav-title">Joueurs</li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/players">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'players'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
       </svg> Joueurs</a></li>       
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/characters">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'characters'  %}">
         <svg class="c-sidebar-nav-icon">
           <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-wc"></use>
         </svg> Personnages</a> </li>
-    {% if user.is_authenticated %}
     <li class="c-sidebar-nav-title">Evenements</li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/raids">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'raids'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-gamepad"></use>
       </svg> Raids</a></li>
-    {% endif %}
     <li class="c-sidebar-nav-title">Loot</li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/loots">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'loots'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
       </svg> Loots</a></li>
-    {% if user.is_authenticated %}
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/loots">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'loots'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-bank"></use>
       </svg> Banque <span class="badge badge-info">WIP</span></a></li>
-    {% endif %}
     <li class="c-sidebar-nav-title">EPGP</li>
-    {% if user.is_authenticated %}
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/sessionloot">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'sessionloot'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-gift"></use>
       </svg> Session Loot</a> </li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/giveraid">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'giveraid'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-badge"></use>
       </svg> Récompense Raid</a> </li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/standby">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'standby'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-couch"></use>
       </svg> Récompense Bench</a> </li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/decay">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'decay'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-chevron-double-down"></use>
       </svg> Decay</a> </li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/dock">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'dock'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-ban"></use>
       </svg> Pénalité</a> </li>
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/giveep">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'giveep'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-birthday-cake"></use>
       </svg> Bonus EP</a> </li>
-    {% endif %}
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp/ranking">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'ranking'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-list-numbered"></use>
       </svg> Ranking EPGP</a> </li> 
-    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/epgp">
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'epgp'  %}">
       <svg class="c-sidebar-nav-icon">
         <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-list-rich"></use>
       </svg> Logs EPGP</a> </li>

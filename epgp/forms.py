@@ -68,11 +68,11 @@ class CharacterForm(forms.ModelForm):
 
 class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
     template_name = 'forms/widgets/custom.html'
-    characters=dict ((o['id'], o) for o in Character.objects.all().select_related().values('playerId', 'name', 'id', 'classe'))
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         ctx = super().create_option(name, value, label, selected, index, subindex=subindex, attrs=attrs)
-        ctx['color'] = self.characters[value]["classe"].lower()
+        color = Character.objects.get(pk=str(value)).classe.lower()
+        ctx['color'] = color
         return ctx
     
     def get_context(self, name, value, attrs):

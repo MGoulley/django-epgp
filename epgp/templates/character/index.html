@@ -10,7 +10,7 @@
         <div class="card">
             <div class="card-header"><i class="fa fa-align-justify"></i><h2>Liste des Personnages</h2>
                 {% if user.is_authenticated %}
-                <button onclick="location.href='/character/add'" class="btn btn-outline-success float-right btn-lg" type="button">Ajouter un personnage</button>
+                <button onclick="location.href='{% url 'newcharacter'  %}'" class="btn btn-outline-success float-right btn-lg" type="button">Ajouter un personnage</button>
                 {% endif %}
             </div>
             <div class="card-body">
