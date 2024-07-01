@@ -55,12 +55,14 @@ class EPGPLogEntryListViewLight(SingleTableMixin, FilterView):
 
 def EPGPPlayerRankingLight(request):
     data = []
-    objects = EPGPLogEntry.objects.getRankPerPlayerComplete()
+    #objects = EPGPLogEntry.objects.getRankPerPlayerComplete()
+    objects = EPGPLogEntry.objects.getRankPerPlayer()
     for object in objects:
         data.append(object)
-    print(data)
-    filter = EPGPRankFilter(request.GET, queryset=objects)
-    table = EPGPRankTable(list(filter.qs))
+    #print(data)
+    #filter = EPGPRankFilter(request.GET, queryset=objects)
+    #table = EPGPRankTable(list(filter.qs))
+    table = EPGPRankTable(data)
 
     return render(request, 'epgp/light/ranking.html', {'table':table, 'filter':filter})
 
