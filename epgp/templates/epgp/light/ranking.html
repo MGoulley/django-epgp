@@ -1,0 +1,32 @@
+{% extends "layouts/base-site-light.html" %}
+{% load render_table from django_tables2 %}
+{% load django_bootstrap5 %}
+
+{% block title %} EPGP {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header"><i class="fa fa-align-justify"></i>
+                <h2>Ranking EPGP</h2>
+                <!-- {% if filter %}
+                    <form action="" method="get" class="post-form">
+                        {% bootstrap_form filter.form layout='block' field_class="form-control" %}
+                        {% bootstrap_button 'Filtrer' button_class="btn-secondary" %}
+                    </form>
+                {% endif %} -->
+            </div>
+            <div class="card-body">
+                {% render_table table %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}
+

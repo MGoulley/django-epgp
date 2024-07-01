@@ -80,7 +80,7 @@ class Character(models.Model):
          return self.name
 
 class Loot(models.Model):
-    inGameId = models.IntegerField(primary_key=True)
+    inGameId = models.IntegerField(primary_key=True, verbose_name='ItemID')
     name = models.CharField(max_length=200, verbose_name='Nom')
     ilvl = models.IntegerField(verbose_name='Niveau item')
     gameSlot = models.IntegerField(verbose_name='Slot')
@@ -213,6 +213,14 @@ class EPGPLogEntryType(models.TextChoices):
 class CustomEPGPLogEntryQuerySet(models.QuerySet):
     def getRankPerPlayer(self):
         return self.values("target_player__name").annotate(
+                total_ep=Sum('ep_delta'), 
+                total_gp=Sum('gp_delta')
+            ).annotate(
+                rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField()), 3), Cast(F('total_ep'), FloatField()))
+            ).order_by("-rank")
+    
+    def getRankPerPlayerComplete(self):
+        return self.values(name=F("target_player__name"), isPU=F("target_player__isPU")).annotate(
                 total_ep=Sum('ep_delta'), 
                 total_gp=Sum('gp_delta')
             ).annotate(

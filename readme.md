@@ -3,6 +3,7 @@ PROD READY : https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # Roadmap
 
+fix filter ranking
 !epgp.totals [--sort <'EP'|'GP'|'ITEMS'|'PRIORITY'(default)>] - Display EPGP standings with total EPGP earned.
 !epgp [<character:string>] - Displays EPGP for a character.
 !epgp.compare <...character:string> [--details] - Compares EPGP across multiple characters.

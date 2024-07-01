@@ -28,12 +28,6 @@ def pages(request):
         template = loader.get_template( 'pages/error-404.html' )
         return HttpResponse(template.render(context, request))
 
-def history(request):
-    tablelog = EPGPLogEntryTableLight(EPGPLogEntry.objects.all())
-    tablelog.paginate(page=request.GET.get("page", 1), per_page=25)
-
-    return render(request, 'history.html', {'tablelog':tablelog})
-
 def ranking(request):
     data = []
     objects = EPGPLogEntry.objects.getRankPerPlayer()
@@ -46,11 +40,29 @@ def ranking(request):
 class LootListViewLight(SingleTableMixin, FilterView):
     model = Loot
     table_class = LootTable
-    template_name = 'loot/index.html'
+    template_name = 'loot/light/index.html'
     filterset_class = LootFilter
     
     def get_queryset(self):
         return Loot.objects.filter(ilvl__lte = 430)
+
+class EPGPLogEntryListViewLight(SingleTableMixin, FilterView):
+    model = EPGPLogEntry
+    table_class = EPGPLogEntryTableLight
+    
+    template_name = 'epgp/light/index.html'
+    filterset_class = EPGPFilter
+
+def EPGPPlayerRankingLight(request):
+    data = []
+    objects = EPGPLogEntry.objects.getRankPerPlayerComplete()
+    for object in objects:
+        data.append(object)
+    print(data)
+    filter = EPGPRankFilter(request.GET, queryset=objects)
+    table = EPGPRankTable(list(filter.qs))
+
+    return render(request, 'epgp/light/ranking.html', {'table':table, 'filter':filter})
 
 def progress(request):
     return render(request, 'progress.html', {})
