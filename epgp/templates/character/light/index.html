@@ -1,0 +1,24 @@
+{% extends "layouts/base-site-light.html" %}
+{% load render_table from django_tables2 %}
+{% load django_bootstrap5 %}
+
+{% block stylesheets %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+{% endblock stylesheets %}
+
+{% block title %} {{ character.name }} {% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-12">
+    <center><h1>{{ character.name }}</h1></center>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}
+

@@ -4,6 +4,7 @@ from django_tables2 import SingleTableView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.template import loader
+from django.db.models import Count, Case, When, IntegerField
 from django.urls import reverse
 
 import pandas as pd
@@ -292,9 +293,7 @@ def sessionLootRaidEPGP(request, id):
     data=[]
     for object in objects:
         data.append(object)
-    print(data)
     table = EPGPLogEntryRaidTable(data)
-    print(table)
     if request.method == "POST":
         form = GiveRaidLootForm(id, request.POST)
         if form.is_valid():
@@ -457,4 +456,42 @@ def index(request):
     return render(request, 'index.html', {})
 
 def player(request, name):
-    return HttpResponse("GET PLAYER INFO OF " + name)
+    try:
+        player = Player.objects.get(name=name)
+    except Player.DoesNotExist:
+        player = None
+    if player:
+        characters = Character.objects.filter(playerId=player)
+        logs = EPGPLogEntry.objects.filter(target_player=player)
+        stats = list(logs.values(name=F("target_player__name")).annotate(
+                total_ep=Sum('ep_delta'), 
+                total_gp=Sum('gp_delta'),
+                countLoot=Count( Case( When(type=EPGPLogEntryType.LOOT, then=1), output_field=IntegerField(),)),
+                countRaid=Count( Case( When(type=EPGPLogEntryType.PARTICIPATE, then=1), output_field=IntegerField(),)),
+            ))[0]
+
+        data=[]
+        for object in logs.select_related():
+            data.append(object)
+        logsTable = EPGPLogEntryTableLight(data)
+
+        data=[]
+        for object in logs.select_related():
+            data.append(object)
+        charactersTable = CharacterTableLight(characters)
+        return render(request, 'player/light/index.html', {"player": player, "characters": characters, "logsTable": logsTable, "charactersTable": charactersTable, "stats": stats})
+    else:
+        print(player)
+        return HttpResponseRedirect(reverse('home'))
+
+def character(request, name):
+    try:
+        character = Character.objects.get(name=name)
+    except Player.DoesNotExist:
+        character = None
+    
+    if character:
+        return render(request, 'character/light/index.html', {"character": character})
+    else:
+        print(player)
+        return HttpResponseRedirect(reverse('home'))

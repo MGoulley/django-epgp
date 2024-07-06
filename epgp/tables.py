@@ -2,6 +2,7 @@ import django_tables2 as tables
 from .models import *
 
 class PlayerTable(tables.Table):
+    name = tables.TemplateColumn(verbose_name="Joueur", template_code='<a href="/player/{{record.name}}">{{record.name}}</a>', orderable=True)
     class Meta:
         model = Player
         fields = ("name", "discordTag", "isOfficier", "isPU")
@@ -11,6 +12,7 @@ class PlayerTable(tables.Table):
             self.columns.hide('discordTag')
 
 class CharacterTable(tables.Table):
+    name = tables.TemplateColumn(verbose_name="Joueur", template_code='<a href="/character/{{record.name}}">{{record.name}}</a>', orderable=True)
     edit = tables.TemplateColumn(verbose_name="Edit", template_code='<a href="{{ request.path }}/edit/{{record.id}}">Edit</a>', orderable=False)
     class Meta:
         model = Character
@@ -20,8 +22,17 @@ class CharacterTable(tables.Table):
         if not request.user.is_authenticated:
             self.columns.hide('edit')
 
+class CharacterTableLight(tables.Table):
+    name = tables.TemplateColumn(verbose_name="Joueur", template_code='<a href="/character/{{record.name}}">{{record.name}}</a>', orderable=True)
+    class Meta:
+        model = Character
+        fields = ("name", "level", "race", "classe", "specMain", "specAlt")
+        row_attrs = {
+            "class": lambda record: "table-" + record.classe.lower()
+        }
+
 class EPGPRankTable(tables.Table):
-    joueur = tables.columns.TemplateColumn(template_code=u"""{{ record.target_player__name }}""", orderable=True, verbose_name='Joueur')
+    joueur = tables.TemplateColumn(verbose_name="Joueur", template_code='<a href="/player/{{record.target_player__name}}">{{record.target_player__name}}</a>', orderable=True)
     total_ep = tables.columns.TemplateColumn(template_code=u"""{{ record.total_ep }}""", orderable=True, verbose_name='Total EP')
     gp = tables.columns.TemplateColumn(template_code=u"""{{ record.total_gp }}""", orderable=True, verbose_name='Total GP')
     ranking = tables.columns.TemplateColumn(template_code=u"""{{ record.rank }}""", orderable=True, verbose_name='Ratio EP/GP')
@@ -56,6 +67,7 @@ class EPGPLogEntryTable(tables.Table):
             self.columns.hide('reattribute')
 
 class EPGPLogEntryTableLight(tables.Table):
+    target_player = tables.TemplateColumn(verbose_name="Joueur", template_code='<a href="/player/{{record.target_player.name}}">{{record.target_player.name}}</a>', orderable=True)
     wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id.inGameId %} <a href="https://www.wowhead.com/cata/fr/item={{record.loot_id.inGameId}}">WowHead</a>{% endif%}', orderable=False)
     class Meta:
         model = EPGPLogEntry

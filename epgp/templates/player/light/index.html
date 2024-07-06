@@ -1,0 +1,89 @@
+{% extends "layouts/base-site-light.html" %}
+{% load render_table from django_tables2 %}
+{% load django_bootstrap5 %}
+
+{% block stylesheets %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+<link href="/static/assets/css/wow/classes-styles.css" rel="stylesheet"></script>
+{% endblock stylesheets %}
+
+{% block title %} {{ player.name }} {% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-12">
+    <center><h1>{{ player.name }}</h1></center>
+  </div>
+</div>
+<div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <div class="text-value-lg">{{ stats.total_ep }}</div>
+            <div>EP</div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-->
+      <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <div class="text-value-lg">{{ stats.total_gp }}</div>
+            <div>GP</div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-->
+      <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <div class="text-value-lg">{{ stats.countLoot }}</div>
+            <div>Nombre de loots obtenu</div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-->
+      <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <div class="text-value-lg">{{ stats.countRaid }}</div>
+            <div>Participations à un raid</div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-->
+</div>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card">
+          <div class="card-header"><i class="fa fa-align-justify"></i>
+              <h2>Liste des modifications d'EPGP</h2>
+          </div>
+          <div class="card-body">
+              {% render_table logsTable %}
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card">
+          <div class="card-header"><i class="fa fa-align-justify"></i>
+              <h2>Les personnages de {{ player.name }}</h2>
+          </div>
+          <div class="card-body">
+              {% render_table charactersTable %}
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row">
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}
+
