@@ -64,7 +64,7 @@ class EPGPLogEntryTableLight(tables.Table):
 
 class EPGPLogEntryRaidTable(tables.Table):
     created_at = tables.columns.TemplateColumn(template_code=u"""{{ record.created_at }}""", orderable=True, verbose_name='Date')
-    target_player = tables.columns.TemplateColumn(template_code=u"""{{ record.target_player__name }}""", orderable=True, verbose_name='Joueur')
+    target_player__name = tables.columns.TemplateColumn(template_code=u"""{{ record.target_player__name }}""", orderable=True, verbose_name='Joueur')
     reason = tables.columns.TemplateColumn(template_code=u"""{{ record.reason }}""", orderable=True, verbose_name='Attribution')
     wowHeadUrl = tables.TemplateColumn(verbose_name="Lien WowHead", template_code='{% if record.loot_id %} <a href="https://www.wowhead.com/cata/fr/item={{record.loot_id}}">WowHead</a>{% endif%}', orderable=False)
     
@@ -72,9 +72,9 @@ class EPGPLogEntryRaidTable(tables.Table):
         return False
 
     class Meta:
-        fields = ('created_at', 'target_player', 'reason', 'wowHeadUrl')
+        fields = ('created_at', 'target_player__name', 'reason', 'wowHeadUrl')
         sequence = fields
-        order_by = '-created_at'
+        order_by = 'target_player__name'
 
 class RaidTable(tables.Table):
     edit = tables.TemplateColumn(verbose_name="Edit", template_code='<a href="{{ request.path }}/edit/{{record.id}}">Edit</a>', orderable=False)
