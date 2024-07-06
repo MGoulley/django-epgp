@@ -288,6 +288,13 @@ def sessionLootEPGP(request):
     return render(request, "epgp/selectraid.html", {"form": form})
 
 def sessionLootRaidEPGP(request, id):
+    objects = EPGPLogEntry.objects.filter(raid=id, type=EPGPLogEntryType.LOOT).select_related().values('target_player__name', 'created_at', 'reason', 'loot_id')
+    data=[]
+    for object in objects:
+        data.append(object)
+    print(data)
+    table = EPGPLogEntryRaidTable(data)
+    print(table)
     if request.method == "POST":
         form = GiveRaidLootForm(id, request.POST)
         if form.is_valid():
@@ -322,11 +329,11 @@ def sessionLootRaidEPGP(request, id):
             log.save()
             dfPrintResult = dfResult[["name", "total_ep", "total_gp", "ratio"]]
             form = GiveRaidLootForm(id)
-            return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id, "saved": "yes", "modalTitle": str(character) + " remporte le loot !", "modalContent": dfPrintResult.to_html(index=False)})
+            return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id, "saved": "yes", "modalTitle": str(character) + " remporte le loot !", "modalContent": dfPrintResult.to_html(index=False), "table": table})
     else:
         form = GiveRaidLootForm(id)
 
-    return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id})
+    return render(request, "epgp/giveraidloot.html", {"form": form, "raidid": id, "table": table})
 
 def applyDecay(request):
     if request.method == "POST":
