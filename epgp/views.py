@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django_tables2 import SingleTableView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
@@ -25,7 +25,6 @@ def pages(request):
         return HttpResponse(template.render(context, request))
 
     except:
-
         template = loader.get_template( 'pages/error-404.html' )
         return HttpResponse(template.render(context, request))
 
@@ -56,13 +55,9 @@ class EPGPLogEntryListViewLight(SingleTableMixin, FilterView):
 
 def EPGPPlayerRankingLight(request):
     data = []
-    #objects = EPGPLogEntry.objects.getRankPerPlayerComplete()
-    objects = EPGPLogEntry.objects.getRankPerPlayer()
+    objects = EPGPLogEntry.objects.getRankPerPlayerWithFilterActivePlayers()
     for object in objects:
         data.append(object)
-    #print(data)
-    #filter = EPGPRankFilter(request.GET, queryset=objects)
-    #table = EPGPRankTable(list(filter.qs))
     table = EPGPRankTable(data)
 
     return render(request, 'epgp/light/ranking.html', {'table':table, 'filter':filter})
@@ -78,7 +73,7 @@ class PlayerListView(SingleTableView):
     table_class = PlayerTable
     template_name = 'player/index.html'
     def get_table_data(self):
-        return Player.objects.values('name', 'discordTag', 'isOfficier', 'isPU')
+        return Player.objects.values('name', 'discordTag', 'isOfficier', 'isPU', 'isActive')
     
 class LootListView(SingleTableMixin, FilterView):
     model = Loot
@@ -99,7 +94,7 @@ class CharacterListView(SingleTableView):
     table_class = CharacterTable
     template_name = 'character/index.html'
     def get_table_data(self):
-        return Character.objects.values("name", "level", "ilvl", "race", "classe", "specMain", "specAlt", "playerId__name", "id")
+        return Character.objects.filter(playerId__isActive=True).values("name", "level", "ilvl", "race", "classe", "specMain", "specAlt", "playerId__name", "id")
 
 def EPGPPlayerRanking(request):
     data = []
@@ -124,7 +119,8 @@ def addPlayer(request):
                 name=form.cleaned_data.get("name"), 
                 discordTag=form.cleaned_data.get("discordTag"),
                 isOfficier=form.cleaned_data.get("isOfficier"),
-                isPU=form.cleaned_data.get("isPU")
+                isPU=form.cleaned_data.get("isPU"),
+                isActive=form.cleaned_data.get("isActive"),
             )
             player.save()
             log = EPGPLogEntry(
@@ -141,6 +137,16 @@ def addPlayer(request):
         form = PlayerForm()
 
     return render(request, "player/add.html", {"form": form})
+
+def disablePlayer(request, name):
+    player = Player.objects.get(name=name)
+    if player.isActive == False:
+        player.isActive = True
+    else:
+        player.isActive = False
+    player.save()
+    return redirect(request.META['HTTP_REFERER'])
+
 
 def editCharacter(request, id):
     character = Character.objects.get(id=id)

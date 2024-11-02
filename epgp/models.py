@@ -13,6 +13,7 @@ class Player(models.Model):
     discordTag = models.CharField(max_length=40, unique=True, verbose_name='Tag discord')
     isPU = models.BooleanField(default=False, verbose_name='Pick Up')
     isOfficier = models.BooleanField(default=False, verbose_name='Officier')
+    isActive = models.BooleanField(default=True, verbose_name='Actif')
 
     objects = models.Manager()
 
@@ -211,6 +212,14 @@ class EPGPLogEntryType(models.TextChoices):
         OTHER = "OTHER", _("Autre")
 
 class CustomEPGPLogEntryQuerySet(models.QuerySet):
+    def getRankPerPlayerWithFilterActivePlayers(self):
+        return self.filter(target_player__isActive=True).values("target_player__name").annotate(
+                total_ep=Sum('ep_delta'), 
+                total_gp=Sum('gp_delta')
+            ).annotate(
+                rank=Coalesce(Round(Cast(F('total_ep'), FloatField())/Cast(F('total_gp'), FloatField()), 3), Cast(F('total_ep'), FloatField()))
+            ).order_by("-rank")
+    
     def getRankPerPlayer(self):
         return self.values("target_player__name").annotate(
                 total_ep=Sum('ep_delta'), 

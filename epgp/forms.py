@@ -12,6 +12,7 @@ class PlayerForm(forms.Form):
     discordTag = forms.CharField(label="Tag discord")
     isOfficier = forms.BooleanField(label="Est un officier", required=False, initial=False,)
     isPU = forms.BooleanField(label="Est un Pick Up", required=False, initial=False,)
+    isActive = forms.BooleanField(label="Est actif", required=False, initial=True,)
 
     def __init__(self, *args, **kwargs):
         super(PlayerForm, self).__init__(*args, **kwargs)
@@ -27,7 +28,7 @@ class DecayForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class DockForm(forms.Form):
-    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
+    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all().filter(isActive=True))
     dock_value_ep = forms.IntegerField(label="Malus en EP", required=False, initial=0)
     dock_value_gp = forms.IntegerField(label="Malus en GP", required=False, initial=0)
     reason = forms.CharField(label="Raison", required=True)
@@ -38,7 +39,7 @@ class DockForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class GiveEPForm(forms.Form):
-    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
+    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all().filter(isActive=True))
     gain_ep = forms.IntegerField(label="Bonus en EP", required=True)
     reason = forms.CharField(label="Raison", required=True)
 
@@ -48,7 +49,7 @@ class GiveEPForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class StandbyForm(forms.Form):
-    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all())
+    playerId = forms.ModelChoiceField(label="Joueur", error_messages={"required": "Choisir un joueur"}, queryset=Player.objects.all().filter(isActive=True))
     raid = forms.ModelChoiceField(label="Raid", error_messages={"required": "Choisir un raid"}, queryset=Raid.objects.filter(isClosed=False).order_by("-played_at"))
 
     def __init__(self, *args, **kwargs):
@@ -84,7 +85,7 @@ class RaidForm(forms.ModelForm):
     instance = forms.ChoiceField(label="Instance", choices=Raid.RaidInstance.choices,)
     participants = forms.ModelMultipleChoiceField(
         label="Participants",
-        queryset=Character.objects.all().order_by("name"),
+        queryset=Character.objects.all().filter(playerId__isActive=True).order_by("name"),
         widget=CustomCheckboxSelectMultiple()
     )
     warcraftLogs = forms.URLField(max_length=200, label='URL Warcraft Logs', required=False)

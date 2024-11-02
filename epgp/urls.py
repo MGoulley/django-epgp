@@ -19,6 +19,7 @@ urlpatterns = [
     path(ADMIN_VIEWS_PREFIX + "", views.indexAdmin, name="indexadmin"),
     path(ADMIN_VIEWS_PREFIX + "players", login_required(PlayerListView.as_view()), name="players"),
     path(ADMIN_VIEWS_PREFIX + "player/add", login_required(views.addPlayer), name="newplayer"),
+    path(ADMIN_VIEWS_PREFIX + "player/disable/<str:name>", login_required(views.disablePlayer), name="disableplayer"),
     path(ADMIN_VIEWS_PREFIX + "characters", login_required(CharacterListView.as_view()), name="characters"),
     path(ADMIN_VIEWS_PREFIX + "character/add", login_required(views.addCharacter), name="newcharacter"),
     path(ADMIN_VIEWS_PREFIX + "characters/edit/<int:id>", login_required(views.editCharacter), name="editcharacter"),

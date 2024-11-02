@@ -3,9 +3,10 @@ from .models import *
 
 class PlayerTable(tables.Table):
     name = tables.TemplateColumn(verbose_name="Joueur", template_code='<a href="/player/{{record.name}}">{{record.name}}</a>', orderable=True)
+    disable = tables.TemplateColumn(verbose_name="Est Inactif", template_code='<a href="/administration/player/disable/{{record.name}}">Tagger comme inactif</a>', orderable=False)
     class Meta:
         model = Player
-        fields = ("name", "discordTag", "isOfficier", "isPU")
+        fields = ("name", "discordTag", "isOfficier", "isPU", "isActive", "disable")
     
     def before_render(self, request):
         if not request.user.is_authenticated:
